@@ -1,0 +1,11 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_cyc_partner_user,Access CyC Partner User,model_cyc_partner,group_cyc_user,1,1,1,1
+access_cyc_contact_user,Access CyC Contact User,model_cyc_contact,group_cyc_user,1,1,1,1
+access_cyc_classification_user,Access CyC Classification User,model_cyc_classification,group_cyc_user,1,1,1,1
+access_cyc_afp_user,Access CyC AFP User,model_cyc_afp,group_cyc_user,1,1,1,1
+access_cyc_extension_user,Access CyC Extension User,model_cyc_extension,group_cyc_user,1,1,1,1
+access_cyc_claim_user,Access CyC Claim User,model_cyc_claim,group_cyc_user,1,1,1,1
+access_cyc_alert_user,Access CyC Alert User,model_cyc_alert,group_cyc_user,1,1,1,1
+access_cyc_result_user,Access CyC Result User,model_cyc_result,group_cyc_user,1,1,1,1
+access_cyc_collection_user,Access CyC Collection User,model_cyc_collection,group_cyc_user,1,1,1,1
+access_cyc_manual_review_user,Access CyC Manual Review User,model_cyc_manual_review,group_cyc_user,1,1,1,1

@@ -1,0 +1,237 @@
+<odoo>
+	<record id="view_cyc_partner_kanban" model="ir.ui.view">
+		<field name="name">cyc.partner.kanban</field>
+		<field name="model">cyc.partner</field>
+		<field name="arch" type="xml">
+			<kanban string="Clientes" create="true" delete="false" duplicate="false" class="cyc-partner-kanban">
+				<templates>
+					<t t-name="kanban-box">
+						<div class="o_kanban_record">
+							<div class="o_kanban_details">
+								<strong class="o_kanban_record_title">
+									<field name="name"/>
+								</strong>
+								<div class="o_kanban_info" style="display: flex; gap: 15px;">
+									<div style="flex: 1;">
+										<ul></ul>
+										<div>Cobertura: <field name="amount_classification_granted"/>€</div>
+										<div>AFPs: <field name="amount_open_afps"/>€ (<field name="number_open_afps"/>)</div>
+										<div>Prórrogas: <field name="amount_open_extensions"/>€ (<field name="number_open_extensions"/>)</div>
+										<div>Siniestros: <field name="amount_open_claim"/>€ (<field name="number_open_claim"/>)</div>
+										<div>Alertas: <field name="number_alerts"/></div>
+									</div>
+									<div style="flex: 1;">
+										<ul></ul>
+										<div>Total Facturado: <field name="total_invoiced"/>€ (<field name="number_cyc_collections"/>)</div>
+										<div>Saldo Vivo: <field name="living_balance"/>€</div>
+										<div>Dentro de Plazo: <field name="amount_on_time"/>€</div>
+										<div>Fuera de Plazo: <field name="amount_overdue"/>€</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</t>
+				</templates>
+			</kanban>
+		</field>
+	</record>
+
+	<record id="view_cyc_partner_list" model="ir.ui.view">
+		<field name="name">cyc.partner.list</field>
+		<field name="model">cyc.partner</field>
+		<field name="arch" type="xml">
+			<list string="Clientes" create="true" delete="false" duplicate="false">
+				<field name="cyc_code"/>
+        <field name="vat"/>
+        <field name="name"/>
+        <field name="number_cyc_collections" sum="Total"/>
+        <field name="total_invoiced" sum="Total"/>
+        <field name="living_balance" sum="Total"/>
+        <field name="amount_on_time" sum="Total"/>
+        <field name="amount_overdue" sum="Total"/>
+        <field name="amount_classification_requested" sum="Total"/>
+				<field name="amount_classification_granted" sum="Total"/>
+				<field name="number_open_afps" sum="Total"/>
+        <field name="amount_open_afps" sum="Total"/>
+				<field name="number_open_extensions" sum="Total"/>
+        <field name="amount_open_extensions" sum="Total"/>
+				<field name="number_open_claim" sum="Total"/>
+				<field name="amount_open_claim" sum="Total"/>
+        <field name="number_alerts" sum="Total"/>
+			</list>
+		</field>
+	</record>
+
+	<record id="view_cyc_partner_form" model="ir.ui.view">
+    <field name="name">cyc.partner.form</field>
+    <field name="model">cyc.partner</field>
+    <field name="arch" type="xml">
+      <form string="Cliente" create="true" delete="false" duplicate="false">
+        <sheet>
+          <div class="oe_button_box" name="button_box">
+            <button name="action_view_res_partner" type="object" class="oe_stat_button" icon="fa-building-o">
+              <field name="number_cyc_contacts" widget="statinfo" string="Sucursales"/>
+            </button>
+          </div>
+          <widget name="web_ribbon" title="Clasificado" invisible="classification_status != 'classified'" widget_id="widget_1"/>
+          <field name="classification_status" invisible="1"/>
+          <div>
+            <h1> 
+              <field name="name" readonly="false"/> 
+              <div style="height: 10px;"></div>
+            </h1>    
+          </div>
+          <group>
+            <group>
+              <field name="vat" readonly="false"/>
+              <field name="cyc_code" readonly="false"/>
+              <field name="cnae" readonly="false"/>
+              <field name="sector" readonly="false"/>
+              <field name="client_nature"/>
+            </group>
+            <group>
+              <field name="country_id" readonly="false"/>
+              <field name="state_id" readonly="false"/>
+              <field name="antiquity" readonly="false"/>
+              <field name="intensity" readonly="false"/>
+              <field name="payment_velocity" readonly="false"/>
+              <field name="compliance_with_deadlines" readonly="false"/>
+              <field name="ability_to_communicate"/>
+            </group>
+          </group>
+          <notebook>
+            <page string="Reporting">
+							<group>
+                <group string="Cobertura" class="cyc-kanban-container">
+                  <field name="classification_ids" colspan="2" nolabel="1" mode="kanban" context="{'kanban_view_ref': 'cyc.view_cyc_classification_kanban', 'form_view_ref': 'cyc.view_cyc_classification_form'}"/>
+                </group>
+                <group string="AFPs Abiertos" class="cyc-kanban-container">
+                  <field name="afp_open_ids" colspan="2" nolabel="1" mode="kanban" context="{'kanban_view_ref': 'cyc.view_cyc_afp_kanban', 'form_view_ref': 'cyc.view_cyc_afp_form'}"/>
+                </group>
+                <group string="Prórrogas Abiertas" class="cyc-kanban-container">
+                  <field name="extension_open_ids" colspan="2" nolabel="1" mode="kanban" context="{'kanban_view_ref': 'cyc.view_cyc_extension_kanban', 'form_view_ref': 'cyc.view_cyc_extension_form'}"/>
+                </group>
+                <group string="Siniestro Abierto" class="cyc-kanban-container">
+                  <field name="claim_open_ids" colspan="2" nolabel="1" mode="kanban" context="{'kanban_view_ref': 'cyc.view_cyc_claim_kanban', 'form_view_ref': 'cyc.view_cyc_claim_form'}"/>
+                </group>
+                <group string="Alertas Nuevas" class="cyc-kanban-container"> 
+                  <field name="alert_new_ids" colspan="2" nolabel="1" mode="kanban" context="{'kanban_view_ref': 'cyc.view_cyc_alert_kanban', 'form_view_ref': 'cyc.view_cyc_alert_form'}"/>
+                </group>
+                <group string="Último Ejercicio" class="cyc-kanban-container">
+                  <field name="result_last_ids" colspan="2" nolabel="1" mode="kanban" context="{'kanban_view_ref': 'cyc.view_cyc_result_kanban', 'form_view_ref': 'cyc.view_cyc_result_form'}"/>
+                </group>
+              </group>
+            </page>
+            <page string="Cobros">
+              <group>
+                <group>
+                  <field name="living_balance"/>
+                  <field name="amount_on_time"/>
+                  <field name="amount_overdue"/>
+                  <field name="default_sales_duration"/>
+                </group>
+              </group>
+            </page>
+            <page string="Clasificaciones">
+              <button name="action_open_classification_wizard" string="Solicitar Clasificación" type="object" class="oe_highlight btn-spacing" context="{'service': 'request_classification'}" invisible="classification_status not in ['to_classify', 'not_classified']"/>
+              <button name="action_open_classification_wizard" string="Ampliar Clasificación" type="object" class="btn-success btn-spacing" context="{'service': 'amplify_classification'}" invisible="classification_status not in ['to_amplify', 'classified']"/>
+              <button name="action_open_classification_wizard" string="Reducir Clasificación" type="object" class="btn-warning btn-spacing" context="{'service': 'reduce_classification'}" invisible="classification_status not in ['to_reduce', 'classified']"/>
+              <button name="action_open_classification_wizard" string="Eliminar Clasificación" type="object" class="btn-danger btn-spacing" context="{'service': 'delete_classification'}" invisible="classification_status not in ['to_remove', 'classified']"/>
+              <button name="action_open_classification_wizard" string="Revisar Clasificación" type="object" class="btn-dark btn-spacing" context="{'service': 'review_classification'}" invisible="classification_status not in ['to_review', 'classified']"/>
+              <group>
+                <group string="Vigor">
+                  <field name="classification_ids" colspan="2" nolabel="1" mode="kanban" context="{'kanban_view_ref': 'cyc.view_cyc_classification_kanban', 'form_view_ref': 'cyc.view_cyc_classification_form'}"/>
+                </group>
+                <group string="Histórico">
+                  <field name="classifications_historic_ids" colspan="2" nolabel="1" mode="kanban" context="{'kanban_view_ref': 'cyc.view_cyc_classification_kanban', 'form_view_ref': 'cyc.view_cyc_classification_form'}"/>
+                </group>
+              </group>
+            </page>
+            <page string="AFPs">
+              <group>
+                <group string="Abiertos">
+                  <field name="afp_open_ids" colspan="2" nolabel="1" mode="kanban" context="{'kanban_view_ref': 'cyc.view_cyc_afp_kanban', 'form_view_ref': 'cyc.view_cyc_afp_form'}"/>
+                </group>
+                <group string="Histórico">
+                  <field name="afp_historic_ids" colspan="2" nolabel="1" mode="kanban" context="{'kanban_view_ref': 'cyc.view_cyc_afp_kanban', 'form_view_ref': 'cyc.view_cyc_afp_form'}"/>
+                </group>
+              </group>
+            </page>
+            <page string="Prórrogas">
+              <group>
+                <group string="Abiertas">
+                  <field name="extension_open_ids" colspan="2" nolabel="1" mode="kanban" context="{'kanban_view_ref': 'cyc.view_cyc_extension_kanban', 'form_view_ref': 'cyc.view_cyc_extension_form'}"/>
+                </group>
+                <group string="Histórico">
+                  <field name="extension_historic_ids" colspan="2" nolabel="1" mode="kanban" context="{'kanban_view_ref': 'cyc.view_cyc_extension_kanban', 'form_view_ref': 'cyc.view_cyc_extension_form'}"/>
+                </group>
+              </group>
+            </page>
+            <page string="Siniestros">             
+              <group>
+                <group string="Abierto">
+                  <field name="claim_open_ids" colspan="2" nolabel="1" mode="kanban" context="{'kanban_view_ref': 'cyc.view_cyc_claim_kanban', 'form_view_ref': 'cyc.view_cyc_claim_form'}"/>
+                </group>
+                <group string="Histórico">
+                  <field name="claim_historic_ids" colspan="2" nolabel="1" mode="kanban" context="{'kanban_view_ref': 'cyc.view_cyc_claim_kanban', 'form_view_ref': 'cyc.view_cyc_claim_form'}"/>
+                </group>
+              </group>
+            </page>
+            <page string="Alertas">
+              <group>
+                <group string="Nuevas">
+                    <field name="alert_new_ids" colspan="2" nolabel="1" mode="kanban" context="{'kanban_view_ref': 'cyc.view_cyc_alert_kanban', 'form_view_ref': 'cyc.view_cyc_alert_form'}"/>
+                </group>
+                <group string="Histórico">
+                    <field name="alert_historic_ids" colspan="2" nolabel="1" mode="kanban" context="{'kanban_view_ref': 'cyc.view_cyc_alert_kanban', 'form_view_ref': 'cyc.view_cyc_alert_form'}"/>
+                </group>
+              </group>
+            </page>
+            <page string="Resultados">
+							<group>
+								<group string="Último Ejercicio">
+									<field name="result_last_ids" colspan="2" nolabel="1" mode="kanban" context="{'kanban_view_ref': 'cyc.view_cyc_result_kanban', 'form_view_ref': 'cyc.view_cyc_result_form'}"/>
+								</group>
+								<group string="Histórico">
+									<field name="result_historic_ids" colspan="2" nolabel="1" mode="kanban" context="{'kanban_view_ref': 'cyc.view_cyc_result_kanban', 'form_view_ref': 'cyc.view_cyc_result_form'}"/>
+								</group>
+              </group>
+            </page>
+          </notebook>
+        </sheet>
+        <chatter/>
+      </form>
+    </field>
+	</record>
+
+	<record id="view_cyc_partner_search" model="ir.ui.view">
+		<field name="name">cyc.partner.search</field>
+		<field name="model">cyc.partner</field>
+		<field name="arch" type="xml">
+			<search>
+				<field name="name"/>
+				<field name="vat"/>
+        <field name="cyc_code"/>
+        <separator/>
+				<filter name="classified" string="Clasificados" domain="[('amount_classification_granted', '>', 0)]"/>
+				<filter name="not_classified" string="Sin Cobertura" domain="[('amount_classification_granted', '=', 0)]"/>
+        <filter name="limited" string="Cobertura Limitada" domain="[('classification_status', '=', 'limited')]"/>
+        <separator/>
+        <filter name="with_incidents" string="Con Incidencias de Pago" domain="[('incidents_number', '>', '0')]"/>
+        <filter name="with_high_risk_alerts" string="Con Alertas de Riesgo Alto" domain="[('high_risk_alerts_number', '>', 0)]"/>
+        <filter name="with_medium_risk_alerts" string="Con Alertas de Riesgo Medio" domain="[('medium_risk_alerts_number', '>', 0)]"/>
+        <separator/>
+        <group>
+          <filter name="country_id" string="País" context="{'group_by': 'country_id'}"/>
+          <filter name="state_id" string="Provincia" context="{'group_by': 'state_id'}"/>
+          <filter name="sector" string="Sector" context="{'group_by': 'sector'}"/>
+          <filter name="client_nature" string="Naturaleza del Cliente" context="{'group_by': 'client_nature'}"/>
+          <filter name="intensity" string="Intensidad" context="{'group_by': 'intensity'}"/>
+          <filter name="compliance_with_deadlines" string="Cumplimiento de Plazos" context="{'group_by': 'compliance_with_deadlines'}"/>
+          <filter name="payment_velocity" string="Velocidad de Pago" context="{'group_by': 'payment_velocity'}"/>
+          <filter name="ability_to_communicate" string="Capacidad de Comunicación" context="{'group_by': 'ability_to_communicate'}"/>
+        </group>
+			</search>
+		</field>
+	</record>
+</odoo>

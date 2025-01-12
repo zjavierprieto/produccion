@@ -1,0 +1,8 @@
+<templates>
+    <t t-name="credito-caucion.TareasPendientes" owl="1">
+        <div style="height:8vh; cursor:pointer; background-color:white; border-radius:0.5rem; flex:1; box-shadow:0 0 10px 1px rgba(0, 0, 0, 0.15); display: flex; justify-content: center; align-items: center; font-size: 20px" t-on-click="onClick" t-attf-class="h1 fw-bold #{props.colorClass}">
+            <span t-esc="props.value" style="margin-right: 10px;"/> 
+            <span t-esc="props.name" class="text-muted"/>
+        </div>
+    </t>
+</templates>

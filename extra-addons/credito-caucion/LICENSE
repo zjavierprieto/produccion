@@ -1,0 +1,13 @@
+Licencia Propietaria de Tecletes v1.0
+
+Este software y los archivos asociados (el “Software”) solo pueden ser utilizados (ejecutados, modificados, ejecutados tras modificaciones) si has adquirido una licencia válida de los autores, generalmente a través de Tecletes, o si has recibido un acuerdo por escrito de los autores del Software (ver el archivo COPYRIGHT).
+
+Puedes desarrollar módulos de Odoo que utilicen el Software como una biblioteca (generalmente dependiendo de él, importándolo y utilizando sus recursos), pero sin copiar ningún código fuente ni material del Software. Puedes distribuir esos módulos bajo la licencia de tu elección, siempre que esa licencia sea compatible con los términos de la Licencia Propietaria de Tecletes (Por ejemplo: LGPL, MIT o licencias propietarias similares a esta).
+
+Está prohibido publicar, distribuir, sublicenciar o vender copias del Software o copias modificadas del Software sin autorización previa de Tecletes.
+
+Restricciones para partners de Odoo: Los partners de Odoo que trabajen con clientes que utilicen este Software no tienen derecho a copiar, plagiar, distribuir, comercializar o crear derivados del Software sin la autorización expresa y por escrito de Tecletes. Cualquier infracción de esta cláusula será considerada una violación grave de los derechos de autor y estará sujeta a las sanciones legales correspondientes.
+
+El aviso de copyright anterior y este aviso de permiso deben incluirse en todas las copias o porciones sustanciales del Software.
+
+EL SOFTWARE SE PROPORCIONA "TAL CUAL", SIN GARANTÍA DE NINGÚN TIPO, EXPRESA O IMPLÍCITA, INCLUYENDO PERO NO LIMITÁNDOSE A LAS GARANTÍAS DE COMERCIABILIDAD, APTITUD PARA UN PROPÓSITO PARTICULAR Y NO INFRACCIÓN. EN NINGÚN CASO LOS AUTORES O TITULARES DEL COPYRIGHT SERÁN RESPONSABLES POR NINGÚN RECLAMO, DAÑO O OTRA RESPONSABILIDAD, YA SEA EN UNA ACCIÓN DE CONTRATO, AGRAVIO O DE OTRO MODO, QUE SURJA DE, FUERA DE O EN RELACIÓN CON EL SOFTWARE O SU USO U OTRO TIPO DE RELACIÓN CON EL SOFTWARE.

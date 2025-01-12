@@ -1,0 +1,120 @@
+<odoo>
+  <data>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+      <field name="name">res.config.settings.view.form.inherit.cyc</field>
+      <field name="model">res.config.settings</field>
+      <field name="priority" eval="35"/>
+      <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+      <field name="arch" type="xml">
+        <xpath expr="//form" position="inside">
+          <app data-string="Crédito y Caución" string="Crédito y Caución" name="cyc_app" logo="/produccion/static/src/description/icon.png">
+            <block title="Configuraciones de Póliza">
+              <setting>
+                <field name="policy_type"/>
+              </setting>
+              <setting help="Correo para enviar comunicaciones de riesgo.">
+                <field name="insurance_agent_email" placeholder="correo@ejemplo.com"/>
+              </setting>
+            </block>
+            <block title="Capital Póliza">
+              <setting help="Capital total asegurado bajo póliza.">
+                <field name="capital_insured"/>
+              </setting>
+              <setting help="Límite operaciones anónimas que no requieren clasificación.">
+                <field name="capital_anonymous"/>
+              </setting>
+              <setting invisible="policy_type not in ['lider+', 'lider']" help="Capital asegurado para operaciones dentro del país.">
+                <field name="capital_interior"/>
+              </setting>
+              <setting invisible="policy_type not in ['lider+', 'lider']" help="Capital asegurado para operaciones fuera del país.">
+                <field name="capital_exterior" />
+              </setting>
+            </block>
+            <block title="Duraciones Póliza">
+              <setting help="Selecciona la duración máxima del crédito permitido.">
+                <field name="max_credit_duration"/>
+              </setting>
+              <setting help="Selecciona la periodicidad de declaración de ventas.">
+                <field name="sales_declaration"/>                
+              </setting>
+              <setting help="Selecciona la declaración máxima de AFP permitida.">
+                  <field name="afp_communication"/>
+              </setting>
+              <setting help="Selecciona la declaración máxima de siniestro permitida.">
+                  <field name="claim_declaration"/>
+              </setting>
+            </block>
+            <block title="Gestor de Clasificaciones">
+              <setting help="Al sobrepasar a la baja este % (importe solicitado vs importe concedido) se recomendará revisar."> 
+                <field name="review_percentage"/>
+              </setting>
+              <setting help="Las solicitudes de revisión se harán de forma automática.">
+                <field name="automatic_review"/>
+              </setting>
+              <setting help="Al sobrepasar a la alta este % (saldo vivo vs clasificación) se recomendará ampliar."> 
+                <field name="extension_percentage"/>
+              </setting>
+              <setting help="Las solicitudes de ampliación se harán de forma automática.">
+                <field name="automatic_extension"/>
+              </setting>
+              <setting help="Al sobrepasar a la baja este % (saldo vivo vs clasificación) se recomendará reducir.">
+                <field name="reduction_percentage"/>
+              </setting>
+              <setting help="Las solicitudes de reducción se harán de forma automática.">
+                <field name="automatic_reduction"/>
+              </setting>
+              <setting help="Al sobrepasar estos días se recomendará la eliminación.">
+                <field name="days_to_delete"/>
+              </setting>
+              <setting help="Las solicitudes de eliminación se harán de forma automática.">
+                <field name="automatic_deletion"/>
+              </setting>
+            </block>
+            <block title="Gestor de Cobros">
+              <setting help="Al sobrepasar estos días con respecto al vencimiento del cobro, se mostrará el aviso de Recordatorio de Pago.">
+                <field name="payment_reminder_notice_days"/>
+              </setting>
+              <setting help="Los Recordatorios de Pago se harán de forma automática.">
+                <field name="automatic_payment_reminder"/>
+                <label for="automatic_payment_reminder_days" invisible="automatic_payment_reminder != True" />
+                <field name="automatic_payment_reminder_days" invisible="automatic_payment_reminder != True" />
+              </setting>
+              <setting help="Al sobrepasar estos días con respecto al vencimiento del cobro, se mostrará el aviso de Prórroga.">
+                <field name="extension_notice_days"/>
+              </setting>
+              <setting help="Las Prórrogas se harán de forma automática.">
+                <field name="automatic_extension"/>
+                <label for="automatic_extension_days" invisible="automatic_extension != True" />
+                <field name="automatic_extension_days" invisible="automatic_extension != True" />
+              </setting>
+              <setting help="Al sobrepasar estos días con respecto al vencimiento del cobro, se mostrará el aviso de AFP.">
+                <field name="afp_notice_days"/>
+              </setting>
+              <setting help="La comunicación de AFP se hará de forma automática.">
+                <field name="automatic_afp"/>
+                <label for="automatic_afp_days" invisible="automatic_afp != True"/>
+                <field name="automatic_afp_days" invisible="automatic_afp != True"/>
+              </setting>
+              <setting help="Al sobrepasar estos días con respecto al vencimiento del cobro, se mostrará el aviso de Siniestro.">
+                <field name="claim_notice_days"/>
+              </setting>
+              <setting help="La comunicación de Siniestros se hará de forma automática.">
+                <field name="automatic_claim"/>
+                <label for="automatic_claim_days" invisible="automatic_claim != True"/>
+                <field name="automatic_claim_days" invisible="automatic_claim != True"/>
+              </setting>
+            </block>
+            <block title="Declaración de Ventas">
+              <setting help="Día en el que se generará el borrador.">
+                <field name="sales_declaration_day"/>
+              </setting>
+              <setting help="La Declaración de Ventas se hará de forma automática">
+                <field name="automatic_sales_declaration"/>
+              </setting>
+            </block>
+          </app>
+        </xpath>
+      </field>
+    </record>
+  </data>
+</odoo>

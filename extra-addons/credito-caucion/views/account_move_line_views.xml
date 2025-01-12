@@ -1,0 +1,24 @@
+<odoo>
+    <record id="view_cobro_tree" model="ir.ui.view">
+        <field name="name">cobro.tree</field>
+        <field name="model">account.move.line</field>
+        <field name="arch" type="xml">
+            <tree string="Cobros (Vencimientos)" create="false" delete="false">
+                <field name="move_id" string="Asiento" widget="many2one"/>
+                <field name="name"/>
+                <field name="partner_id" string="Cliente"/>
+                <field name="date_maturity" string="Fecha Vencimiento" widget="remaining_days"/>
+                <field name="limite_comunicar_afp" string="Límite AFP" widget="remaining_days"/>
+                <field name="limite_comunicar_prorroga" string="Límite Prórroga" widget="remaining_days"/>
+                <field name="limite_comunicar_siniestro" string="Límite Siniestro" widget="remaining_days"/>
+                <field name="debit"/>
+                <field name="amount_residual"/>
+                <field name="estado_riesgo" string="Estado" widget="badge" 
+                    decoration-danger="estado_riesgo == 'impagado'"
+                    decoration-info="estado_riesgo == 'en plazo'"
+                    decoration-success="estado_riesgo == 'cobrado'"
+                />
+            </tree>
+        </field>
+    </record>
+</odoo>

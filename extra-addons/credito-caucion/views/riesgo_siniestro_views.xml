@@ -1,0 +1,100 @@
+<odoo>
+    <record id="view_siniestro_tree" model="ir.ui.view">
+        <field name="name">siniestro.tree</field>
+        <field name="model">riesgo.siniestro</field>
+        <field name="arch" type="xml">
+            <tree string="Siniestros" create="false" delete="false" duplicate="false" default_order="fecha_declaracion desc">
+                <field name="display_name"/>
+                <field name="numero"/>
+                <field name="estado"/>
+                <field name="fecha_declaracion"/>
+                <field name="credito_total" sum="Total"/>
+                <field name="credito_asegurado" sum="Total"/>
+                <field name="porcentaje_garantia"/>
+                <field name="gestor"/>
+                <field name="fuera_de_seguro"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_kanban_siniestro" model="ir.ui.view">
+        <field name="name">siniestro.kanban</field>
+        <field name="model">riesgo.siniestro</field>
+        <field name="arch" type="xml">
+            <kanban style="display: flex; flex-wrap: wrap;">
+                <field name="fecha_declaracion"/>
+                <field name="credito_total"/>
+                <field name="credito_asegurado"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_global_click o_kanban_record">
+                            <t t-esc="'Flecha Declarado: '"/><strong><field name="fecha_declaracion"/></strong><br/>
+                            <t t-esc="'Crédito Total: '"/><strong><field name="credito_total"/></strong><br/>
+                            <t t-esc="'Crédito Asegurado: '"/><strong><field name="credito_asegurado"/></strong><br/>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_form_siniestro" model="ir.ui.view">
+        <field name="name">siniestro.form</field>
+        <field name="model">riesgo.siniestro</field>
+        <field name="arch" type="xml">
+            <form string="Siniestro" create="false" delete="false" duplicate="false">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_vencimiento" type="object" class="oe_stat_button" icon="fa-pencil-square-o">
+                            <field name="numero_vencimientos" widget="statinfo" string="Cobros"/>
+                        </button>
+                    </div>
+                    <div>
+                        <h1> 
+                            <field name="display_name" placeholder="Nombre" options="{'line_breaks': False}" widget="text" class="text-break"/> 
+                            <div style="height: 10px;"></div>
+                        </h1>    
+                    </div>
+                    <group>
+                        <group>
+                            <field name="numero"/>
+                            <field name="fecha_declaracion"/>
+                            <field name="credito_total"/>
+                            <field name="credito_asegurado"/>
+                            <field name="documentos_ids" widget="many2many_binary"/>
+                        </group>
+                        <group>
+                            <field name="estado"/>
+                            <field name="porcentaje_garantia" string="% Garantía"/>
+                            <field name="gestor"/>
+                            <field name="situacion"/>
+                            <field name="fuera_de_seguro"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+     <record id="view_siniestro_search" model="ir.ui.view">
+        <field name="name">siniestro.search</field>
+        <field name="model">riesgo.siniestro</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="display_name"/>
+                <field name="estado"/>
+                <filter string="Siniestros Abiertos y Pendientes" name="siniestros_abiertos_pendientes" domain="[('estado', 'in', ['Abierto', 'Pendiente'])]"/>
+                <filter string="Abiertos" name="siniestros_abiertos" domain="[('estado', '=', 'Abierto')]"/>
+                <filter string="Pendientes" name="siniestros_pendientes" domain="[('estado', '=', 'Pendiente')]"/>
+                <filter string="Anulados" name="siniestros_anulados" domain="[('estado', '=', 'Anulado')]"/>
+                <filter string="Terminados" name="siniestros_terminados" domain="[('estado', '=', 'Terminado')]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_siniestro" model="ir.actions.act_window">
+        <field name="name">Siniestro</field>
+        <field name="res_model">riesgo.siniestro</field>
+        <field name="view_mode">kanban,form</field>
+    </record>
+</odoo>

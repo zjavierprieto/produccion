@@ -1,0 +1,28 @@
+.o_dashboard {
+  background-color: #f0f0f0;
+  padding: 20px;
+}
+
+.amount-green {
+  color: green;
+}
+
+.amount-yellow {
+  color: rgb(255, 221, 0);
+}
+
+.amount-orange {
+  color: darkorange;
+}
+
+.amount-red {
+  color: red;
+}
+
+.chart-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

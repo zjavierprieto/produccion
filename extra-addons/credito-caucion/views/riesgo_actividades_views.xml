@@ -1,0 +1,13 @@
+<odoo>
+    <record id="view_riesgo_activity_tree" model="ir.ui.view">
+        <field name="name">riesgo.activity.tree</field>
+        <field name="model">riesgo</field>
+        <field name="arch" type="xml">
+            <tree string="Actividades de Riesgo" create="false" delete="false" duplicate="false" default_order="activity_date_deadline desc">
+                <field name="name" string="Nombre"/>
+                <field name="activity_date_deadline" string="Fecha"/>
+                <field name="activity_summary" string="Resumen"/>
+            </tree>
+        </field>
+    </record>
+</odoo>

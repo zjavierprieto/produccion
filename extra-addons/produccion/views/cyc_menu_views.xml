@@ -1,0 +1,69 @@
+<odoo>
+	<!-- Dashboards -->
+  <record id="action_cyc_dashboard_general_summary" model="ir.actions.client">
+    <field name="name">Resumen General</field>
+    <field name="tag">cyc.dashboard.general.summary</field>
+  </record>
+
+  <record id="action_cyc_dashboard_portfolio" model="ir.actions.client">
+    <field name="name">Cartera de Clientes</field>
+    <field name="tag">cyc.dashboard.portfolio</field>
+  </record>
+
+  <record id="action_cyc_dashboard_quality" model="ir.actions.client">
+    <field name="name">Calidad de Cartera</field>
+    <field name="tag">cyc.dashboard.quality</field>
+  </record>
+
+  <record id="action_cyc_dashboard_maps" model="ir.actions.client">
+    <field name="name">Distribución de Clientes</field>
+    <field name="tag">cyc.dashboard.maps</field>
+  </record>
+
+  <record id="action_cyc_dashboard_collection" model="ir.actions.client">
+    <field name="name">Facturación / Cobros</field>
+    <field name="tag">cyc.dashboard.collection</field>
+  </record>
+
+  <!-- CyC Partner -->
+  <record id="action_cyc_partner" model="ir.actions.act_window">
+		<field name="name">Clientes</field>
+		<field name="res_model">cyc.partner</field>
+		<field name="view_mode">kanban,list,form</field>
+		<field name="view_id" ref="view_cyc_partner_kanban"/>
+		<field name="search_view_id" ref="view_cyc_partner_search"/>
+		<field name="view_ids" eval="[
+			(5,), 
+			(0, 0, {'view_mode': 'kanban', 'view_id': ref('view_cyc_partner_kanban')}), 
+			(0, 0, {'view_mode': 'list', 'view_id': ref('view_cyc_partner_list')})]"/>
+  </record>
+
+	<!-- Services -->
+  <record id="action_cyc_classification" model="ir.actions.act_window">
+      <field name="name">Clasificaciones</field>
+      <field name="res_model">cyc.classification</field> 
+      <field name="view_mode">list,form</field> 
+      <field name="view_id" ref="view_cyc_classification_list"/> 
+      <field name="search_view_id" ref="view_cyc_classification_search"/>
+      <field name="context">{'search_default_classifications_in_force': 1}</field>
+  </record>
+
+  <!-- Root -->
+  <menuitem id="menu_cyc_root" name="Crédito y Caución" sequence="1" groups="group_cyc_user"/>
+
+	<!-- Submenus -->
+	<menuitem id="menu_cyc_dashboard" name="Cuadros de Mandos" parent="menu_cyc_root" sequence="2"/>
+  <menuitem id="menu_cyc_partner" name="Clientes" parent="menu_cyc_root" action="action_cyc_partner" sequence="1"/>
+	<menuitem id="menu_cyc_services" name="Servicios" parent="menu_cyc_root" sequence="3"/>
+
+	<!-- Submenu Dashboards -->
+  <menuitem id="menu_cyc_dashboard_home" name="Resumen General" parent="menu_cyc_dashboard" action="action_cyc_dashboard_general_summary" sequence="1"/>
+  <menuitem id="menu_cyc_dashboard_portfolio" name="Cartera de Clientes" parent="menu_cyc_dashboard" action="action_cyc_dashboard_portfolio" sequence="2"/>
+  <menuitem id="menu_cyc_dashboard_quality" name="Calidad de Cartera" parent="menu_cyc_dashboard" action="action_cyc_dashboard_quality" sequence="3"/>
+  <menuitem id="menu_cyc_dashboard_maps" name="Distribución de Cartera" parent="menu_cyc_dashboard" action="action_cyc_dashboard_maps" sequence="4"/>
+  <menuitem id="menu_cyc_dashboard_collection" name="Facturación / Cobros" parent="menu_cyc_dashboard" action="action_cyc_dashboard_collection" sequence="5"/>
+
+	<!-- Submenu Services  -->
+  <menuitem id="menu_cyc_classification" name="Clasificaciones" parent="menu_cyc_services" action="action_cyc_classification" sequence="1"/>
+
+</odoo>

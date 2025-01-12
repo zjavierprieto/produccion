@@ -1,0 +1,18 @@
+<odoo>
+  <record id="view_sale_order_confirm_warning_form" model="ir.ui.view">
+      <field name="name">sale.order.confirm.warning.form</field>
+      <field name="model">sale.order.confirm.warning</field>
+      <field name="arch" type="xml">
+          <form string="Confirmación de Riesgo">
+              <group>
+                  <field name="message" nolabel="1" colspan="2"/>
+              </group>
+              <footer>
+                  <button name="action_solicitar_ampliacion" string="Ampliar Clasificación" type="object" class="btn-primary"/>
+                  <button name="confirm_action" string="Confirmar" type="object" class="btn-primary"/>
+                  <button string="Cancelar" special="cancel" class="btn-secondary"/>
+              </footer>
+          </form>
+      </field>
+  </record>
+</odoo>

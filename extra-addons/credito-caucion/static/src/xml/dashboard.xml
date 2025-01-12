@@ -1,0 +1,95 @@
+<templates xml:space="preserve">
+    <t t-name="credito-caucion.CreditoCaucionDashboard" owl="1">
+        <div style="height: 100%; padding: 2vh; background-color:white">
+            <!-- Primera fila: KPIs -->
+            <div style="width:100%; display:flex; gap:2vh; height:8%;">
+                <KpiCard 
+                    name="'Clasificaciones'" 
+                    value="kpiData.clasificaciones" 
+                    cash="kpiData.clasificaciones_importe" 
+                    class="'bg-success text-white'"
+                    colorClass="'amount-green'"/>
+                <KpiCard 
+                    name="'AFP'" 
+                    value="kpiData.afp" 
+                    cash="kpiData.afp_importe" 
+                    class="'bg-warning text-dark'"
+                    colorClass="'amount-yellow'"/>
+                <KpiCard 
+                    name="'Prórrogas'" 
+                    value="kpiData.prorrogas" 
+                    cash="kpiData.prorrogas_importe" 
+                    class="'bg-light text-dark'"
+                    colorClass="'amount-orange'"/>
+                <KpiCard 
+                    name="'Siniestros'" 
+                    value="kpiData.siniestros" 
+                    cash="kpiData.siniestros_importe" 
+                    class="'bg-danger text-white'"
+                    colorClass="'amount-red'"/>
+                <TareasPendientes 
+                    name="'Alertas'" 
+                    value="kpiData.alertas" 
+                    class="'bg-info text-white'"
+                    colorClass="'amount-blue'"/>
+                <TareasPendientes 
+                    name="'Actividades'" 
+                    value="kpiData.actividades" 
+                    class="'bg-primary text-white'"
+                    colorClass="'amount-purple'"/>
+            </div>
+            <!-- Segunda fila: Gráficos -->
+            <div style="height:42.5%; margin-top:2%; display:flex; gap:2vh">
+                <div style="height:100%; background-color:white; border-radius:0.5rem; flex:1; box-shadow:0 0 10px 1px rgba(0, 0, 0, 0.15)">
+                    <div class="d-flex align-items-center justify-content-between p-2">
+                        <h3 class="text-primary fw-bold m-0">Distribución de Clasificaciones</h3>
+                        <div class="px-3 py-1 bg-primary cursor-pointer">
+                            <span class="fa fa-arrow-right text-white"/>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-center" style="height: calc(100% - 50px);">
+                        <BarChartComponent chartPurpose="'distribucion_importe_clasificado'"/>
+                    </div>
+                </div>
+
+                <div style="height:100%; background-color:white; border-radius:0.5rem; flex:1; box-shadow:0 0 10px 1px rgba(0, 0, 0, 0.15)">
+                    <div class="d-flex align-items-center justify-content-between p-2">
+                        <h3 class="text-primary fw-bold m-0">Incidencias de Cobros</h3>
+                        <div class="px-3 py-1 bg-primary cursor-pointer">
+                            <span class="fa fa-arrow-right text-white"/>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-center" style="height: calc(100% - 50px);">
+                        <LineChartComponent chartPurpose="'incidencias_cobros'"/>
+                    </div>
+                </div>
+            </div>
+
+            <div style="height:42.5%; margin-top:1%; display:flex; gap:2vh">
+                <div style="height:100%; background-color:white; border-radius:0.5rem; flex:1; box-shadow:0 0 10px 1px rgba(0, 0, 0, 0.15)">
+                    <div class="d-flex align-items-center justify-content-between p-2">
+                        <h3 class="text-primary fw-bold m-0">Calidad de Cartera</h3>
+                        <div class="px-3 py-1 bg-primary cursor-pointer">
+                            <span class="fa fa-arrow-right text-white"/>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-center" style="height: calc(100% - 50px);">
+                        <BarChartComponent chartPurpose="'calidad_cartera'"/>
+                    </div>
+                </div>
+         
+                <div style="height:100%; background-color:white; border-radius:0.5rem; flex:1; box-shadow:0 0 10px 1px rgba(0, 0, 0, 0.15)">
+                    <div class="d-flex align-items-center justify-content-between p-2">
+                        <h3 class="text-primary fw-bold m-0">Mayores Clasificaciones</h3>
+                        <div class="px-3 py-1 bg-primary cursor-pointer">
+                            <span class="fa fa-arrow-right text-white"/>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-center" style="height: calc(100% - 50px);">
+                        <BarChartComponent chartPurpose="'top_clasificaciones'"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

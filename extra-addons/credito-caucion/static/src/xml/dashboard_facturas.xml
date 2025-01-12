@@ -1,0 +1,71 @@
+<templates xml:space="preserve">
+    <t t-name="credito-caucion.CreditoCaucionDashboardFacturas" owl="1">
+        <div style="height: 100%; padding: 2vh; background-color:white">
+            <!-- Primera fila: KPIs -->
+            <div style="width:100%; display:flex; gap:2vh; height:8%;">
+                <TareasPendientes 
+                    name="'Clasificaciones a Gestionar'" 
+                    value="kpiData.gestor_clasificaciones" 
+                    class="'bg-success text-white'"
+                    colorClass="'amount-green'"/>
+                <TareasPendientes 
+                    name="'Cobros a Gestionar'" 
+                    value="kpiData.gestor_cobros" 
+                    class="'bg-warning text-dark'"
+                    colorClass="'amount-yellow'"/>
+            </div>
+            <!-- Segunda fila: Gráficos -->
+            <div style="height:42.5%; margin-top:2%; display:flex; gap:2vh">
+                <div style="height:100%; background-color:white; border-radius:0.5rem; flex:1; box-shadow:0 0 10px 1px rgba(0, 0, 0, 0.15)">
+                    <div class="d-flex align-items-center justify-content-between p-2">
+                        <h3 class="text-primary fw-bold m-0">Ventas</h3>
+                        <div class="px-3 py-1 bg-primary cursor-pointer">
+                            <span class="fa fa-arrow-right text-white"/>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-center" style="height: calc(100% - 50px);">
+                        <BarChartComponent chartPurpose="'ventas'"/>
+                    </div>
+                </div>
+
+                <div style="height:100%; background-color:white; border-radius:0.5rem; flex:1; box-shadow:0 0 10px 1px rgba(0, 0, 0, 0.15)">
+                    <div class="d-flex align-items-center justify-content-between p-2">
+                        <h3 class="text-primary fw-bold m-0">Saldo Facturas</h3>
+                        <div class="px-3 py-1 bg-primary cursor-pointer">
+                            <span class="fa fa-arrow-right text-white"/>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-center" style="height: calc(100% - 50px);">
+                        <BarChartComponent chartPurpose="'saldo_facturas'"/>
+                    </div>
+                </div>
+            </div>
+
+            <div style="height:42.5%; margin-top:1%; display:flex; gap:2vh">
+                <div style="height:100%; background-color:white; border-radius:0.5rem; flex:1; box-shadow:0 0 10px 1px rgba(0, 0, 0, 0.15)">
+                    <div class="d-flex align-items-center justify-content-between p-2">
+                        <h3 class="text-primary fw-bold m-0">Próximos cobros previstos</h3>
+                        <div class="px-3 py-1 bg-primary cursor-pointer">
+                            <span class="fa fa-arrow-right text-white"/>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-center" style="height: calc(100% - 50px);">
+                        <BarChartComponent chartPurpose="'proximos_cobros_previstos'"/>
+                    </div>
+                </div>
+         
+                <div style="height:100%; background-color:white; border-radius:0.5rem; flex:1; box-shadow:0 0 10px 1px rgba(0, 0, 0, 0.15)">
+                    <div class="d-flex align-items-center justify-content-between p-2">
+                        <h3 class="text-primary fw-bold m-0">Clientes con más importe fuera de plazo</h3>
+                        <div class="px-3 py-1 bg-primary cursor-pointer">
+                            <span class="fa fa-arrow-right text-white"/>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-center" style="height: calc(100% - 50px);">
+                        <BarChartComponent chartPurpose="'top_10_customers_impagadas'"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

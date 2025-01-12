@@ -1,0 +1,101 @@
+
+<odoo>
+    <record id="view_afp_tree" model="ir.ui.view">
+        <field name="name">afp.tree</field>
+        <field name="model">riesgo.afp</field>
+        <field name="arch" type="xml">
+            <tree string="AFP" create="false" delete="false" duplicate="false" default_order="fecha_vencimiento desc">
+                <field name="display_name"/>
+                <field name="fecha_vencimiento"/>
+                <field name="importe_impagado" sum="Total"/>
+                <field name="status"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_kanban_afp" model="ir.ui.view">
+        <field name="name">afp.kanban</field>
+        <field name="model">riesgo.afp</field>
+        <field name="arch" type="xml">
+            <kanban style="display: flex; flex-wrap: wrap;">
+                <field name="importe_impagado"/>
+                <field name="fecha_vencimiento"/>
+                <field name="status"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click o_kanban_record">
+                            <t t-esc="'Importe Impagado: '"/><strong><field name="importe_impagado"/></strong><br/>
+                            <t t-esc="'Fecha Vencimiento: '"/><strong><field name="fecha_vencimiento"/></strong><br/>
+                            <t t-esc="'Estado: '"/><strong><field name="status"/></strong><br/>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_form_afp" model="ir.ui.view">
+        <field name="name">afp.form</field>
+        <field name="model">riesgo.afp</field>
+        <field name="arch" type="xml">
+            <form string="Aviso Falta de Pago" create="false" delete="false" duplicate="false">
+                <header>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_vencimiento" type="object" class="oe_stat_button" icon="fa-pencil-square-o">
+                            <field name="numero_vencimientos" widget="statinfo" string="Cobros"/>
+                        </button>
+                    </div>
+                    <div>
+                        <h1> 
+                            <field name="display_name" placeholder="Nombre" options="{'line_breaks': False}" widget="text" class="text-break"/> 
+                            <div style="height: 10px;"></div>
+                        </h1>    
+                    </div>
+                    <group>
+                        <group>
+                            <field name="importe_impagado"/>
+                            <field name="fecha_comunicacion" string="Fecha Comunicación"/>
+                            <field name="fecha_vencimiento" string="Fecha Impago"/>
+                            <field name="mensaje"/>
+                        </group>
+                        <group>
+                            <field name="estado"/>
+                            <field name="status"/>
+                            <field name="motivo_estado"/>
+                            <field name="error"/>
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <field name="estado" invisible="1"/>
+                    <button string="Cancelar" type="object" class="btn-danger" name="action_cancel_afp" confirm="¿Estás seguro de que deseas cancelar esta AFP?" invisible="estado != 'Comunicado'"/>
+                    <button string="Cerrar" special="cancel" class="oe_highlight"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_afp_search" model="ir.ui.view">
+        <field name="name">afp.search</field>
+        <field name="model">riesgo.afp</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="display_name"/>
+                <field name="estado"/>
+                
+                <filter string="Comunicados" name="afp_comunicados" domain="[('estado', '=', 'Comunicado')]"/>
+                <filter string="Pendientes" name="afp_pendientes" domain="[('estado', '=', 'Pendiente')]"/>
+                <filter string="Cancelados" name="afp_cancelados" domain="[('estado', '=', 'Cancelado')]"/>
+                <filter string="Rechazados" name="afp_rechazados" domain="[('estado', '=', 'Rechazado')]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_afp" model="ir.actions.act_window">
+        <field name="name">Comunicación de AFP</field>
+        <field name="res_model">riesgo.afp</field>
+        <field name="view_mode">kanban,form</field>
+    </record>
+</odoo>

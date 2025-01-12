@@ -1,0 +1,104 @@
+<odoo>
+    <record id="view_prorroga_tree" model="ir.ui.view">
+        <field name="name">prorroga.tree</field>
+        <field name="model">riesgo.prorroga</field>
+        <field name="arch" type="xml">
+            <tree string="Prórrogas" create="false" delete="false" duplicate="false" default_order="fecha_vencimiento desc">
+                <field name="display_name"/>
+                <field name="fecha_vencimiento"/>
+                <field name="fecha_vencimiento_prorroga"/>
+                <field name="importe_prorrogado" sum="Total"/>
+                <field name="status"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_kanban_prorroga" model="ir.ui.view">
+        <field name="name">prorroga.kanban</field>
+        <field name="model">riesgo.prorroga</field>
+        <field name="arch" type="xml">
+            <kanban style="display: flex; flex-wrap: wrap;">
+                <field name="importe_prorrogado"/>
+                <field name="fecha_vencimiento"/>
+                <field name="fecha_vencimiento_prorroga"/>
+                <field name="estado"/>
+                <field name="status"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_global_click">
+                            <t t-esc="'Importe Prorrogado: '"/><strong><field name="importe_prorrogado"/></strong><br/>
+                            <t t-esc="'Vencimiento Inicial: '"/><strong><field name="fecha_vencimiento"/></strong><br/>
+                            <t t-esc="'Vencimiento Prórroga: '"/><strong><field name="fecha_vencimiento_prorroga"/></strong><br/>
+                            <t t-esc="'Estado: '"/><strong><field name="status"/></strong><br/>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_form_prorroga" model="ir.ui.view">
+        <field name="name">prorroga.form</field>
+        <field name="model">riesgo.prorroga</field>
+        <field name="arch" type="xml">
+            <form string="Prórroga" create="false" delete="false" duplicate="false">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_vencimiento" type="object" class="oe_stat_button" icon="fa-pencil-square-o">
+                            <field name="numero_vencimientos" widget="statinfo" string="Cobros"/>
+                        </button>
+                    </div>
+                    <div>
+                        <h1> 
+                            <field name="display_name" placeholder="Nombre" options="{'line_breaks': False}" widget="text" class="text-break"/> 
+                            <div style="height: 10px;"></div>
+                        </h1>    
+                    </div>
+                    <group>
+                        <group>
+                            <field name="importe_prorrogado"/>
+                            <field name="fecha_comunicacion" string="Fecha Comunicación"/>
+                            <field name="fecha_vencimiento"/>
+                            <field name="fecha_vencimiento_prorroga"/>
+                            <field name="documento_pago"/>     
+                        </group>
+                        <group>
+                            <field name="estado"/>
+                            <field name="status"/>
+                            <field name="motivo_estado"/>
+                            <field name="mensaje"/>
+                            <field name="error"/>
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <field name="estado" invisible="1"/>
+                    <button string="Cancelar" type="object" class="btn-danger" name="action_cancel_prorroga" confirm="¿Estás seguro de que deseas cancelar esta Prórroga?" invisible="estado != 'Comunicada'"/>
+                    <button string="Cerrar" special="cancel" class="oe_highlight"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_prorroga_search" model="ir.ui.view">
+        <field name="name">prorroga.search</field>
+        <field name="model">riesgo.prorroga</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="display_name"/>
+                <field name="estado"/>
+                
+                <filter string="Comunicadas" name="prorrogas_comunicadas" domain="[('estado', '=', 'Comunicada')]"/>
+                <filter string="Pendientes" name="prorrogas_pendientes" domain="[('estado', '=', 'Pendiente')]"/>
+                <filter string="Canceladas" name="prorrogas_canceladas" domain="[('estado', '=', 'Cancelada')]"/>
+                <filter string="Rechazadas" name="prorrogas_rechazadas" domain="[('estado', '=', 'Rechazada')]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_prorroga" model="ir.actions.act_window">
+        <field name="name">Prórroga</field>
+        <field name="res_model">riesgo.prorroga</field>
+        <field name="view_mode">kanban,form</field>
+    </record>
+</odoo>

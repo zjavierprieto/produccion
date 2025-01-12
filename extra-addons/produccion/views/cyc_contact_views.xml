@@ -1,0 +1,58 @@
+<odoo>
+	<record id="view_cyc_contact_kanban" model="ir.ui.view">
+		<field name="name">cyc.contact.kanban</field>
+		<field name="model">cyc.contact</field>
+		<field name="arch" type="xml">
+			<kanban string="Sucursales" create="false" delete="false" duplicate="false">
+				<templates>
+					<t t-name="kanban-box">
+						<div class="oe_kanban_global_click">
+							<div class="oe_kanban_image">
+				        <img t-att-src="'/cyc/static/src/img/company_image.png'" class="oe_kanban_avatar oe_kanban_image"/>
+							</div>
+							<div class="oe_kanban_details">
+								<strong class="o_kanban_record_title">
+									<field name="res_partner_id"/>
+								</strong>
+                <field name="email"/>
+                <field name="phone"/>
+								<field name="email"/>
+                <field name="phone"/>
+							</div>
+						</div>
+					</t>
+				</templates>
+			</kanban>
+		</field>
+	</record>
+
+  <record id="view_cyc_contact_form" model="ir.ui.view">
+		<field name="name">cyc.contact.form</field>
+		<field name="model">cyc.contact</field>
+		<field name="arch" type="xml">
+			<form string="Sucursal" create="false" edit="false" delete="false" duplicate="false">
+				<sheet>
+				<div>
+            <h1> 
+              <field name="res_partner_id" readonly="True"/> 
+              <div style="height: 10px;"></div>
+            </h1>    
+          </div>
+					<group>
+						<group>
+							<field name="country_id"/>
+							<field name="state_id"/>
+							<field name="city"/>
+						</group>
+						<group>
+							<field name="person"/>
+							<field name="position"/>
+							<field name="email"/>
+							<field name="phone"/>
+						</group>
+					</group>
+				</sheet>
+			</form>
+		</field>
+	</record>
+</odoo>

@@ -1,0 +1,84 @@
+<odoo>
+    <record id="view_clasificacion_tree" model="ir.ui.view">
+        <field name="name">clasificacion.tree</field>
+        <field name="model">riesgo.clasificacion</field>
+        <field name="arch" type="xml">
+            <tree string="Clasificación" create="false" delete="false" duplicate="false" default_order="display_name desc">
+                <field name="display_name"/>
+                <field name="fecha_clasificacion"/>
+                <field name="estado"/>
+                <field name="status" string="Status"/>
+                <field name="importe_solicitado" sum="Total"/>
+                <field name="importe_concedido" sum="Total"/>
+                <field name="importe_concedido_empresa" sum="Total"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_kanban_clasificacion" model="ir.ui.view">
+        <field name="name">clasificacion.kanban</field>
+        <field name="model">riesgo.clasificacion</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field name="importe_solicitado"/>
+                <field name="estado"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_global_click o_kanban_record">
+                            <t t-esc="'Flecha de Clasificación: '"/><strong><field name="fecha_clasificacion"/></strong><br/>
+                            <t t-esc="'Importe Solicitado: '"/><strong><field name="importe_solicitado"/></strong><br/>
+                            <t t-esc="'Importe Concedido: '"/><strong><field name="importe_concedido"/></strong><br/>
+                            <t t-esc="'Estado: '"/><strong><field name="status"/></strong><br/>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_form_clasificacion" model="ir.ui.view">
+        <field name="name">clasificacion.form</field>
+        <field name="model">riesgo.clasificacion</field>
+        <field name="arch" type="xml">
+            <form string="Clasificación de Crédito" create="false" duplicate="false">
+                <sheet>
+                    <group>
+                        <field name="fecha_clasificacion"/>
+                        <field name="importe_solicitado"/>
+                        <field name="importe_concedido"/>
+                        <field name="importe_concedido_empresa"/>
+                        <field name="estado"/>
+                        <field name="status"/>
+                        <field name="duracion"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <field name="estado" invisible="1"/>
+                    <button string="Eliminar" type="object" class="btn-danger" name="action_delete_clasificacion" confirm="¿Estás seguro de que deseas desclasificar a este cliente?" invisible="estado != 'En Vigor'"/>
+                    <button string="Cerrar" special="cancel" class="oe_highlight"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_clasificacion_search" model="ir.ui.view">
+        <field name="name">clasificacion.search</field>
+        <field name="model">riesgo.clasificacion</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="display_name"/>
+                <field name="estado"/>
+                
+                <filter string="En Vigor" name="clasificaciones_en_vigor" domain="[('estado', '=', 'En Vigor')]"/>
+                <filter string="Pendientes" name="clasificaciones_pendientes" domain="[('estado', '=', 'Pendiente')]"/>
+                <filter string="Históricos" name="clasificaciones_historicas" domain="[('estado', '=', 'Historico')]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_clasificacion" model="ir.actions.act_window">
+        <field name="name">Clasificacion de Crédito</field>
+        <field name="res_model">riesgo.clasificacion</field>
+        <field name="view_mode">kanban,form</field>
+    </record>
+</odoo>

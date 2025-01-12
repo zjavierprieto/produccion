@@ -1,0 +1,224 @@
+<odoo>
+    <!-- Gestor de Clasificaciones -->
+    
+    <record id="view_gestor_clasificacion_tree" model="ir.ui.view">
+        <field name="name">gestor.clasificacion.tree</field>
+        <field name="model">riesgo</field>
+        <field name="arch" type="xml">
+            <tree string="Gestor de Clasificaciones" create="false" delete="false">
+                <field name="name"/>
+                <field name="importe_concedido" sum="Total"/>
+                <field name="saldo_vivo" sum="Total"/>
+                <field name="facturado_ultimo_periodo" string="Facturado Último Periodo" sum="Total"/>
+                <field name="tiempo_desde_ultimo_pedido" string="Días Desde Último Pedido" invisible="tiempo_desde_ultimo_pedido == -1"/>
+                <button name="action_abrir_wizard_clasificacion" string="Clasificar" type="object" class="btn-primary" icon="fa-envelope" invisible="estado_clasificacion != 'clasificar'" context="{'action_type': 'clasificar'}"/>
+                <button name="action_abrir_wizard_clasificacion" string="Ampliar" type="object" class="btn-success" icon="fa-envelope" invisible="estado_clasificacion != 'ampliar'" context="{'action_type': 'ampliar'}"/>
+                <button name="action_abrir_wizard_clasificacion" string="Reducir" type="object" class="btn-warning" icon="fa-envelope" invisible="estado_clasificacion != 'reducir'" context="{'action_type': 'reducir'}"/>
+                <button name="action_abrir_wizard_clasificacion" string="Eliminar" type="object" class="btn-danger" icon="fa-envelope" invisible="estado_clasificacion != 'eliminar'" context="{'action_type': 'eliminar'}"/>
+                <field name="estado_clasificacion" optional="hide"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_gestor_clasificaciones_search" model="ir.ui.view">
+        <field name="name">gestor.clasificaciones.search</field>
+        <field name="model">riesgo</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+
+            </search>
+        </field>
+    </record>
+
+    <!-- Gestor de Cobros -->
+    
+    <record id="view_gestor_cobros_tree" model="ir.ui.view">
+        <field name="name">gestor.cobros.tree</field>
+        <field name="model">account.move.line</field>
+        <field name="arch" type="xml">
+            <tree string="Gestor de Cobros" create="false" delete="false">
+                <field name="move_id" string="Asiento" widget="many2one"/>
+                <field name="partner_id" string="Cliente"/>
+                <field name="date_maturity" string="Fecha Vencimiento" widget="remaining_days"/>
+                <field name="limite_comunicar_afp" string="Límite AFP" widget="remaining_days"/>
+                <field name="limite_comunicar_prorroga" string="Límite Prórroga" widget="remaining_days"/>
+                <field name="limite_comunicar_siniestro" string="Límite Siniestro" widget="remaining_days"/>
+                <field name="amount_residual"/>
+                <button name="action_enviar_recordatorio_pago" string="Recordatorio" type="object" class="btn-primary" icon="fa-envelope" invisible="mostrar_boton_recordatorio == False"/>
+                <button name="action_comunicar_afp" string="AFP" type="object" class="btn-warning" icon="fa-exclamation" invisible="mostrar_boton_afp == False"/>
+                <button name="action_comunicar_prorroga" string="Prórroga" type="object" class="btn-info" icon="fa-check" invisible="mostrar_boton_prorroga == False"/>
+                <button name="action_declarar_siniestro" string="Siniestro" type="object" class="btn-danger" icon="fa-exclamation" invisible="mostrar_boton_siniestro == False"/>
+                <button name="action_cancelar_incidencias" string="Cancelar" type="object" class="btn-secondary" icon="fa-check" invisible="mostrar_boton_cancelar_incidencias == False"/>
+                
+                <field name="mostrar_boton_recordatorio" optional="hide"/>
+                <field name="mostrar_boton_afp" optional="hide"/>
+                <field name="mostrar_boton_prorroga" optional="hide"/>
+                <field name="mostrar_boton_siniestro" optional="hide"/>
+                <field name="mostrar_boton_cancelar_incidencias" optional="hide"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_gestor_cobros_form" model="ir.ui.view">
+        <field name="name">gestor.cobros.form</field>
+        <field name="model">account.move.line</field>
+        <field name="arch" type="xml">
+            <form string="Vencimiento de Pago">
+                <sheet>
+                    <div name="button_box" class="oe_button_box">
+                        <!-- Botón para ver AFP -->
+                        <button name="action_view_afp" class="oe_stat_button" icon="fa-warning" type="object" 
+                            invisible="afp_count == 0">
+                            <field name="afp_count" widget="statinfo" string="AFP"/>
+                        </button>
+
+                        <!-- Botón para ver Prórroga -->
+                        <button name="action_view_prorroga" class="oe_stat_button" icon="fa-calendar" type="object" 
+                            invisible="prorroga_count == 0">
+                            <field name="prorroga_count" widget="statinfo" string="Prórroga"/>
+                        </button>
+
+                        <!-- Botón para ver Siniestro -->
+                        <button name="action_view_siniestro" class="oe_stat_button" icon="fa-exclamation-circle" type="object" 
+                            invisible="siniestro_count == 0">
+                            <field name="siniestro_count" widget="statinfo" string="Siniestro"/>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="move_id" string="Asiento" widget="many2one" readonly="1"/>
+                            <field name="partner_id" string="Cliente" readonly="1"/>
+                            <field name="date_maturity" string="Fecha Vencimiento"/>
+                            <field name="debit" string="Importe Total"/>
+                            <field name="amount_residual" string="Deuda Pendiente"/>
+                            <field name="estado_riesgo" readonly="1"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <!-- Pestaña de Incidencias -->
+                        <page string="Incidencias">
+                            <group>
+                                <group string="AFP">
+                                    <field name="afp_ids" widget="one2many_list" nolabel="1" colspan="2" readonly="1" />
+                                </group>
+                                <group string="Prórrogas">
+                                    <field name="prorroga_ids" widget="one2many_list" nolabel="1" colspan="2" readonly="1"/>
+                                </group>
+                                <group string="Siniestros">
+                                    <field name="siniestro_ids" widget="one2many_list" nolabel="1" colspan="2" readonly="1"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_gestor_cobros_search" model="ir.ui.view">
+        <field name="name">gestor.cobros.search</field>
+        <field name="model">account.move.line</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="estado_riesgo"/>
+                
+                <filter string="Vivos" name="vivos" domain="[('estado_riesgo', '=', 'recordar')]"/>
+                <filter string="Impagados" name="impagados" domain="[('estado_riesgo', '=', 'comunicar')]"/>
+                <filter string="Recobrados" name="recobrados" domain="[('estado_riesgo', '>', 'cancelar')]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_comunicar_incidencia_cobros_tree" model="ir.ui.view">
+        <field name="name">comunicar.incidencia.cobros.tree</field>
+        <field name="model">account.move.line</field>
+        <field name="arch" type="xml">
+            <tree string="Cobros Impagados" create="false" delete="false">
+                <field name="move_id" string="Asiento" widget="many2one"/>
+                <field name="date_maturity" string="Fecha Vencimiento" widget="remaining_days"/>
+                <field name="limite_comunicar_afp" string="Límite AFP" widget="remaining_days"/>
+                <field name="limite_comunicar_prorroga" string="Límite Prórroga" widget="remaining_days"/>
+                <field name="limite_comunicar_siniestro" string="Límite Siniestro" widget="remaining_days"/>
+                <field name="amount_residual"/>
+                <button name="action_comunicar_afp" string="AFP" type="object" class="btn-warning" icon="fa-envelope" invisible="context.get('action_type') == 'prorroga' or context.get('action_type') == 'siniestro'"/>
+                <button name="action_comunicar_prorroga" string="Prórroga" type="object" class="btn-primary" icon="fa-envelope" invisible="context.get('action_type') == 'afp' or context.get('action_type') == 'siniestro'"/>
+                <button name="action_declarar_siniestro" string="Siniestro" type="object" class="btn-danger" icon="fa-envelope" invisible="context.get('action_type') == 'afp' or context.get('action_type') == 'prorroga'"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Declaración de Ventas -->
+
+    <record id="view_declaracion_ventas_tree" model="ir.ui.view">
+        <field name="name">declaracion.ventas.tree</field>
+        <field name="model">riesgo.declaracion.ventas</field>
+        <field name="arch" type="xml">
+            <tree string="Declaración de Ventas por Mes y Año">
+                <field name="mes"/>
+                <field name="ano"/>
+                <field name="total_ventas_asegurables" sum="Total"/>
+                <field name="total_ventas_no_asegurables" sum="Total"/>
+                <field name="estado"/>
+                <button name="action_declarar" type="object" class="btn-primary" string="Declarar" icon="fa-envelope" invisible="estado == 'declarado'"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_declaracion_ventas_pivot" model="ir.ui.view">
+        <field name="name">declaracion.ventas.pivot</field>
+        <field name="model">riesgo.declaracion.ventas</field>
+        <field name="arch" type="xml">
+            <pivot string="Declaración de Ventas">
+                <field name="mes" type="row"/>
+                <field name="ano" type="row"/>
+
+                <!-- Sección de Ventas Asegurables -->
+                <field name="total_ventas_asegurables" type="measure" string="Total Asegurables"/>
+
+                <!-- Sección de Ventas No Asegurables -->
+                <field name="total_ventas_no_asegurables" type="measure" string="Total No Asegurables"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_declaracion_ventas_form" model="ir.ui.view">
+        <field name="name">declaracion.ventas.form</field>
+        <field name="model">riesgo.declaracion.ventas</field>
+        <field name="arch" type="xml">
+            <form string="Declaración de Ventas">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="mes"/>
+                            <field name="total_ventas_asegurables"/>
+                        </group>
+                        <group>
+                            <field name="ano"/>
+                            <field name="total_ventas_no_asegurables"/>
+                        </group>
+                        
+                        <group string="Ventas Asegurables">
+                            <field name="ventas_asegurables_ids" string="">
+                                <tree editable="bottom" default_order="orden_pais, pais asc">
+                                    <field name="pais"/>
+                                    <field name="duracion"/>
+                                    <field name="importe"/>
+                                </tree>
+                            </field>
+                        </group>
+                        <group string="Ventas No Asegurables">
+                            <field name="ventas_no_asegurables_ids" string="">
+                                <tree editable="bottom">
+                                    <field name="tipo_cliente"/>
+                                    <field name="importe"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

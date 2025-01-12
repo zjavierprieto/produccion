@@ -1,0 +1,118 @@
+<odoo>
+    <data>
+        <!-- Heredamos la vista de configuración general -->
+        <record id="res_config_settings_view_form" model="ir.ui.view">
+            <field name="name">res.config.settings.view.form.inherit.riesgo</field>
+            <field name="model">res.config.settings</field>
+            <field name="priority" eval="35"/>
+            <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form" position="inside">
+                    <app data-string="Crédito y Riesgo" string="TeCredit" name="credit_risk" logo="/credito-caucion/static/description/icon.png">
+                        <block title="Configuraciones de Póliza">
+                            <setting>
+                                <field name="tipo_poliza"/>
+                            </setting>
+                            <setting help="Correo para enviar comunicaciones de riesgo.">
+                                <field name="email_agente_asegurador" placeholder="correo@ejemplo.com"/>
+                            </setting>
+                        </block>
+                        <block title="Capital Póliza">
+                            <setting help="Capital total asegurado bajo póliza.">
+                                <field name="capital_asegurado"/>
+                            </setting>
+                            <setting help="Límite operaciones anónimas que no requieren clasificación.">
+                                <field name="cifra_anonimos"/>
+                            </setting>
+                            <setting invisible="tipo_poliza not in ['lider+', 'lider']" help="Capital asegurado para operaciones dentro del país.">
+                                <field name="capital_interior"/>
+                            </setting>
+                            <setting invisible="tipo_poliza not in ['lider+', 'lider']" help="Capital asegurado para operaciones fuera del país.">
+                                <field name="capital_exterior" />
+                            </setting>
+                        </block>
+                        <block title="Duraciones Póliza">
+                            <setting help="Selecciona la duración máxima del crédito permitido.">
+                                <field name="duracion_maxima_credito"/>
+                            </setting>
+                            <setting help="Selecciona la periodicidad de declaración de ventas.">
+                                <field name="declaracion_ventas"/>
+                            </setting>
+                            <setting help="Selecciona la declaración máxima de AFP permitida.">
+                                <field name="comunicacion_afp"/>
+                            </setting>
+                            <setting help="Selecciona la declaración máxima de siniestro permitida.">
+                                <field name="declaracion_siniestro"/>
+                            </setting>
+                        </block>
+                        <block title="Gestor de Clasificaciones">
+                            <setting help="Al sobrepasar a la alta este % (saldo vivo vs clasificación) se recomendará ampliar."> 
+                                <field name="porcentaje_ampliacion"/>
+                            </setting>
+                            <setting help="Las solicitudes de ampliación se harán de forma automática.">
+                                <field name="ampliacion_automatica"/>
+                            </setting>
+                            <setting help="Al sobrepasar a la baja este % (saldo vivo vs clasificación) se recomendará reducir.">
+                                <field name="porcentaje_reduccion"/>
+                            </setting>
+                            <setting help="Las solicitudes de reducción se harán de forma automática.">
+                                <field name="reduccion_automatica"/>
+                            </setting>
+                            <setting help="Al sobrepasar estos días se recomendará la eliminación.">
+                                <field name="tiempo_para_eliminar"/>
+                            </setting>
+                            <setting help="Las solicitudes de eliminación se harán de forma automática.">
+                                <field name="eliminacion_automatica"/>
+                            </setting>
+                        </block>
+                        <block title="Gestor de Cobros">
+                            <setting help="Al sobrepasar estos días con respecto el vencimiento del cobro, se mostrará el aviso de Recordatorio de Pago.">
+                                <field name="dias_recordatorio_pago_aviso"/>
+                            </setting>
+                            <setting help="Los Recordatorios de Pago se harán de forma automática.">
+                                <field name="recordatorio_pago_automatico"/>
+                                <label for="dias_recordatorio_pago_automatico" invisible="recordatorio_pago_automatico != True" />
+                                <field name="dias_recordatorio_pago_automatico" invisible="recordatorio_pago_automatico != True" />
+                            </setting>
+                            <setting help="Al sobrepasar estos días con respecto el vencimiento del cobro, se mostrará el aviso de Prórroga.">
+                                <field name="dias_prorroga_aviso"/>
+                            </setting>
+                            <setting help="Las Prórrogas se harán de forma automática.">
+                                <field name="prorroga_automatica"/>
+                                <label for="dias_prorroga_automatica" invisible="prorroga_automatica != True" />
+                                <field name="dias_prorroga_automatica" invisible="prorroga_automatica != True" />
+                            </setting>
+                            <setting help="Al sobrepasar estos días con respecto el vencimiento del cobro, se mostrará el aviso de AFP.">
+                                <field name="dias_afp_aviso"/>
+                            </setting>
+                            <setting help="La comunicación de AFP se harán de forma automática.">
+                                <field name="afp_automatico"/>
+                                <label for="dias_afp_automatico" invisible="afp_automatico != True"/>
+                                <field name="dias_afp_automatico" invisible="afp_automatico != True"/>
+                            </setting>
+                            <setting help="Al sobrepasar estos días con respecto el vencimiento del cobro, se mostrará el aviso de Siniestro.">
+                                <field name="dias_siniestro_aviso"/>
+                            </setting>
+                            <setting help="La comunicación de Siniestros se harán de forma automática.">
+                                <field name="siniestro_automatico"/>
+                                <label for="dias_siniestro_automatico" invisible="siniestro_automatico != True"/>
+                                <field name="dias_siniestro_automatico" invisible="siniestro_automatico != True"/>
+                            </setting>
+                        </block>
+                        <block title="Declaración de Ventas">
+                            <setting help="Día en el que se generará el borrador.">
+                                <field name="dia_declaracion_ventas"/>
+                            </setting>
+                            <setting help="La Declaración de Ventas se hará de forma automática">
+                                <field name="declaracion_ventas_automatica"/>
+                            </setting>
+                            <setting help="Máximo % para aplicar sobre facturación.">
+                                <field name="variable_minorizacion"/>
+                            </setting>
+                        </block>
+                    </app>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

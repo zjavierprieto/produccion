@@ -1,0 +1,36 @@
+<odoo>
+  <record id="view_form_resultado" model="ir.ui.view">
+    <field name="name">resultado.form</field>
+    <field name="model">riesgo.resultado</field>
+    <field name="arch" type="xml">
+      <form string="Resultado" options="{'editable': true}">
+        <sheet>
+          <group>
+              <field name="ejercicio"/>
+              <field name="ventas"/>
+              <field name="resultado"/>
+              <field name="fondos_propios"/>
+              <field name="fondos_maniobra"/>
+              <field name="endeudamiento_cp"/>
+              <field name="empleados"/>
+          </group>
+          <group>
+              <field name="descripcion_cnae"/>
+              <field name="etiquetas"/>
+              <field name="importe_solicitado"/>
+              <field name="importe_concedido"/>
+              <field name="num_afp"/>
+              <field name="num_pro"/>
+              <field name="num_sin"/>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="action_resultado" model="ir.actions.act_window">
+      <field name="name">Resultado</field>
+      <field name="res_model">riesgo.resultado</field>
+      <field name="view_mode">form</field>
+  </record>
+</odoo>

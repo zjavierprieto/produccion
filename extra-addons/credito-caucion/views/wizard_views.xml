@@ -1,0 +1,117 @@
+<odoo>
+    <record id="view_form_create_riesgo_clasificacion" model="ir.ui.view">
+        <field name="name">create.riesgo.clasificacion.form</field>
+        <field name="model">create.riesgo.clasificacion</field>
+        <field name="arch" type="xml">
+            <form string="Solicitud de Clasificación de Riesgo">
+                <group>
+                    <field name="importe_concedido" readonly="1"/>
+                    <field name="importe_solicitado" invisible="importe_solicitado == 0"/>
+                </group>
+                <footer>
+                    <button string="Solicitar" type="object" name="action_submit" class="btn-primary"/>
+                    <button string="Cancelar" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    
+    <record id="view_form_create_riesgo_afp" model="ir.ui.view">
+        <field name="name">create.riesgo.afp.form</field>
+        <field name="model">create.riesgo.afp</field>
+        <field name="arch" type="xml">
+            <form string="Comunicar Aviso de Falta de Pago">
+                <group>
+                    <field name="vencimiento_ids" string="Vencimiento Asociado" options="{'no_open': True}" readonly="1" widget="many2many_tags"/>
+                    <field name="importe_impagado"/>
+                    <field name="fecha_vencimiento"/>
+                    <field name="observacion"/>
+                </group>
+                <footer>
+                    <button string="Comunicar" type="object" name="action_create_afp" class="oe_highlight"/>
+                    <button string="Cancelar" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_form_create_riesgo_prorroga" model="ir.ui.view">
+        <field name="name">create.riesgo.prorroga.form</field>
+        <field name="model">create.riesgo.prorroga</field>
+        <field name="arch" type="xml">
+            <form string="Comunicar Prorroga">
+                <group>
+                    <field name="vencimiento_ids" string="Vencimiento Asociado" options="{'no_open': True}" readonly="1" widget="many2many_tags"/>
+                    <field name="importe_prorrogado"/>
+                    <field name="fecha_vencimiento"/>
+                    <field name="fecha_vencimiento_prorroga"/>
+                    <field name="documento_pago" filename="documento_pago_nombre"/>
+                    <field name="observacion"/>
+                </group>
+                <footer>
+                    <button string="Comunicar" type="object" name="action_create_prorroga" class="oe_highlight"/>
+                    <button string="Cancelar" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    
+    <record id="view_form_create_riesgo_siniestro" model="ir.ui.view">
+        <field name="name">create.riesgo.siniestro.form</field>
+        <field name="model">create.riesgo.siniestro</field>
+        <field name="arch" type="xml">
+            <form string="Comunicar siniestro">
+                <group>
+                    <field name="vencimiento_ids" string="Vencimiento Asociado" options="{'no_open': True}" readonly="1" widget="many2many_tags"/>
+                    <field name="credito_total"/>
+                    <field name="documentos_ids" widget="many2many_binary" options="{'attachment': True}"/>
+                </group>
+                <footer>
+                    <button string="Comunicar" type="object" name="action_create_siniestro" class="oe_highlight"/>
+                    <button string="Cancelar" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_recordatorio_pago_wizard_form" model="ir.ui.view">
+        <field name="name">recordatorio.pago.wizard.form</field>
+        <field name="model">recordatorio.pago.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Enviar Recordatorio de Pago">
+                <group>
+                    <field name="partner_id"/>
+                    <field name="subject"/>
+                    <field name="body" widget="text"/>
+                </group>
+                <footer>
+                    <button string="Cancelar" class="btn-secondary" special="cancel"/>
+                    <button string="Enviar" type="object" name="send_reminder" class="btn-primary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+
+    <record id="view_comunicar_incidencia_wizard_form" model="ir.ui.view">
+        <field name="name">comunicar.incidencia.wizard.form</field>
+        <field name="model">comunicar.incidencia.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Comunicar Incidencia">
+                <group>
+                    <field name="vencimiento_ids" widget="many2many_tags" readonly="0"/>
+                    <field name="riesgo_id" string="Cliente"/>
+                    <field name="fecha_vencimiento" string="Fecha Vencimiento" widget="remaining_days"/>
+                    <field name="importe_impagado"/>
+                </group>
+                <footer>
+                    <button name="action_abrir_wizard_afp" string="AFP" type="object" class="btn-primary"/>
+                    <button name="action_abrir_wizard_prorroga" string="Prórroga" type="object" class="btn-success"/>
+                    <button name="action_abrir_wizard_siniestro" string="Siniestro" type="object" class="btn-danger"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>

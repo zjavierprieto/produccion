@@ -1,0 +1,363 @@
+<odoo>
+    <!-- Kanban View for Clientes -->
+    <record id="view_riesgo_kanban" model="ir.ui.view">
+        <field name="name">riesgo.kanban</field>
+        <field name="model">riesgo</field>
+        <field name="arch" type="xml">
+            <kanban create="false" edit="false" default_order="name asc">
+                <field name="name"/>
+                <field name="image_128"/>
+                <field name="street"/>
+                <field name="city"/>
+                <field name="country_id"/>
+                <field name="numero_afp_comunicados"/>
+                <field name="numero_prorrogas_comunicadas"/>
+                <field name="numero_siniestros_abiertos"/>
+                <field name="numero_alertas_nuevas"/>
+                <field name="importe_total_afp_comunicados"/>
+                <field name="importe_total_prorrogas_comunicadas"/>
+                <field name="importe_total_siniestros_abiertos"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click o_kanban_record_has_image_fill o_res_partner_kanban">
+                            <div class="o_kanban_image_fill_left d-none d-md-block o_kanban_image_full">
+                                <img t-att-src="kanban_image('riesgo', 'image_128', record.id.raw_value)"/>
+                            </div>
+                            <div class="oe_kanban_details d-flex flex-column justify-content-between">
+                                <strong class="o_kanban_record_title oe_partner_heading" style="height: 40px; display: flex; align-items: center;">
+                                    <field name="name"/>
+                                    <br></br>
+                                </strong>                               
+                                <div>Cobertura: <field name="importe_concedido"/></div>
+                                <div><field name="numero_afp_comunicados"/> AFP: <field name="importe_total_afp_comunicados"/></div>
+                                <div><field name="numero_prorrogas_comunicadas"/> Prórrogas: <field name="importe_total_prorrogas_comunicadas"/></div>
+                                <div><field name="numero_siniestros_abiertos"/> Siniestros: <field name="importe_total_siniestros_abiertos"/></div>
+                                <div><field name="numero_alertas_nuevas"/> Alertas </div>
+                            </div>
+                            <div class="o_kanban_record_bottom">
+                                <div class="oe_kanban_bottom_left"></div>
+                                <div class="oe_kanban_bottom_right"></div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Tree View for Clientes -->
+    <record id="view_riesgo_tree" model="ir.ui.view">
+        <field name="name">riesgo.tree</field>
+        <field name="model">riesgo</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="importe_concedido" string="Cobertura" sum="Total"/>
+                <field name="numero_afp_comunicados" string="AFP" sum="Total"/>
+                <field name="numero_prorrogas_comunicadas" string="Prórrogas" sum="Total"/>
+                <field name="numero_siniestros_abiertos" string="Siniestros" sum="Total"/>
+                <field name="numero_alertas_nuevas" string="Alertas" sum="Total"/>
+                <field name="importe_total_afp_comunicados" string="$ en AFP" sum="Total"/>
+                <field name="importe_total_prorrogas_comunicadas" string="$ en Prórrogas" sum="Total"/>
+                <field name="importe_total_siniestros_abiertos" string="$ en Siniestros" sum="Total"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View for Clientes -->
+    <record id="view_form_riesgo" model="ir.ui.view">
+        <field name="name">riesgo.form</field>
+        <field name="model">riesgo</field>
+        <field name="priority">1</field>
+        <field name="arch" type="xml">
+            <form string="Cliente" create="false" delete="false" duplicate="false">
+                <header>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="Clasificado" invisible="clasificado_bool == False" widget_id="widget_1"/> 
+                    <field name="clasificado_bool" invisible="1"/>
+                    <div>
+                        <h1> 
+                            <field name="name" placeholder="Nombre" options="{'line_breaks': False}" widget="text" class="text-break"/> 
+                            <div style="height: 10px;"></div>
+                        </h1>    
+                    </div>
+                    <group>
+                        <group>
+                            <span class="o_form_label o_td_label" name="address_name">
+                                <b>Dirección</b>
+                            </span>
+                            <div class="o_address_format">
+                                <field name="street" placeholder="Dirección" class="o_address_street" nolabel="1"/>
+                                <field name="city" placeholder="Ciudad" class="o_address_city" nolabel="1"/><field name="zip" placeholder="Código Postal" class="o_address_zip" nolabel="1"/>
+                                <field name="state_id" placeholder="Provincia" class="o_address_city" nolabel="1"/><field name="country_id" placeholder="País" nolabel="1" class="o_address_zip"/>
+                            </div>
+                            <field name="vat" placeholder="NIF/CIF"/>
+                        </group>
+                        <group>
+                            <field name="expediente" placeholder="Expediente"/>
+                            <field name="phone" placeholder="Teléfono"/>
+                            <field name="website" placeholder="Sitio web"/>
+                            <field name="cnae" placeholder="CNAE"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Reporting">
+                            <group>
+                                <group string="Clasificación En Vigor" colspan="4">
+                                    <group>
+                                        <field name="importe_solicitado"/>
+                                        <field name="importe_concedido"/>
+                                        <field name="importe_concedido_empresa"/>
+                                    </group>
+                                    <group>
+                                        <field name="fecha_clasificacion"/>
+                                        <field name="estado"/>
+                                        <field name="motivo"/>
+                                    </group>
+                                </group>
+                                <group string="AFP Comunicados">
+                                    <field name="afp_comunicados" colspan="2" nolabel="1" widget="kanban" context="{'form_view_ref': 'credito-caucion.view_form_reporting_afp'}">
+                                        <kanban style="display: flex; flex-wrap: wrap;">
+                                            <field name="importe_impagado"/>
+                                            <field name="fecha_vencimiento"/>
+                                            <field name="status"/>
+                                            <templates>
+                                                <t t-name="kanban-box">
+                                                    <div t-attf-class="oe_kanban_global_click">
+                                                        <t t-esc="'Importe Impagado: '"/><strong><field name="importe_impagado"/></strong><br/>
+                                                        <t t-esc="'Fecha Vencimiento: '"/><strong><field name="fecha_vencimiento"/></strong><br/>
+                                                        <t t-esc="'Estado: '"/><strong><field name="estado"/></strong><br/>
+                                                        <t t-if="record.motivo_estado.raw_value">
+                                                            <t t-esc="'Motivo: '"/><strong><field name="motivo_estado"/></strong><br/>
+                                                        </t>
+                                                    </div>
+                                                </t>
+                                            </templates>
+                                        </kanban>
+                                    </field>
+                                </group>
+                                <group string="Prórrogas Comunicadas">
+                                    <field name="prorrogas_comunicadas" colspan="2" nolabel="1" mode="kanban" context="{'form_view_ref': 'credito-caucion.view_form_prorroga_reporting'}">                                   
+                                        <kanban style="display: flex; flex-wrap: wrap;">
+                                            <field name="importe_prorrogado"/>
+                                            <field name="fecha_comunicacion"/>
+                                            <field name="fecha_vencimiento"/>
+                                            <field name="fecha_vencimiento_prorroga"/>
+                                            <field name="estado"/>
+                                            <field name="motivo_estado"/>
+                                            <templates>
+                                                <t t-name="kanban-box">
+                                                    <div t-attf-class="oe_kanban_global_click">
+                                                        <t t-esc="'Importe Prorrogado: '"/><strong><field name="importe_prorrogado"/></strong><br/>
+                                                        <t t-esc="'Fecha Comunicación: '"/><strong><field name="fecha_comunicacion"/></strong><br/>
+                                                        <t t-esc="'Vencimiento Inicial: '"/><strong><field name="fecha_vencimiento"/></strong><br/>
+                                                        <t t-esc="'Vencimiento Prórroga: '"/><strong><field name="fecha_vencimiento_prorroga"/></strong><br/>
+                                                        <t t-esc="'Estado: '"/><strong><field name="estado"/></strong><br/>
+                                                        <t t-if="record.motivo_estado.raw_value">
+                                                            <t t-esc="'Motivo: '"/><strong><field name="motivo_estado"/></strong><br/>
+                                                        </t>
+                                                    </div>
+                                                </t>
+                                            </templates>
+                                        </kanban>
+                                    </field>
+                                </group>
+                                <group string="Siniestros Abiertos">
+                                    <field name="siniestros_abiertos" colspan="2" nolabel="1" mode="kanban" context="{'kanban_view_ref': 'credito-caucion.view_form_sinisestro_reporting'}">
+                                        <kanban style="display: flex; flex-wrap: wrap;">
+                                            <field name="fecha_declaracion"/>
+                                            <field name="credito_total"/>
+                                            <field name="credito_asegurado"/>
+                                            <field name="porcentaje_garantia"/>
+                                            <field name="gestor"/>
+                                            <field name="situacion"/>
+                                            <field name="fuera_de_seguro"/>
+                                            <field name="estado"/>
+                                            <templates>
+                                                <t t-name="kanban-box">
+                                                    <div t-attf-class="oe_kanban_global_click">
+                                                        <t t-esc="'Fecha Declaración: '"/><strong><field name="fecha_declaracion"/></strong><br/>
+                                                        <t t-esc="'Crédito Total: '"/><strong><field name="credito_total"/></strong><br/>
+                                                        <t t-esc="'Crédito Asegurado: '"/><strong><field name="credito_asegurado"/></strong><br/>
+                                                        <t t-esc="'Porcentaje Garantía: '"/><strong><field name="porcentaje_garantia"/></strong><br/>
+                                                        <t t-esc="'Gestor: '"/><strong><field name="gestor"/></strong><br/>
+                                                        <t t-esc="'Situación: '"/><strong><field name="situacion"/></strong><br/>
+                                                        <t t-esc="'Fuera de Seguro: '"/><strong><field name="fuera_de_seguro"/></strong><br/>
+                                                        <t t-esc="'Estado: '"/><strong><field name="estado"/></strong><br/>
+                                                    </div>
+                                                </t>
+                                            </templates>
+                                        </kanban>
+                                    </field>
+                                </group>
+                                <group string="Alertas Nuevas">
+                                    <field name="alertas_nuevas" colspan="2" nolabel="1" mode="kanban" context="{'kanban_view_ref': 'credito-caucion.view_form_alerta_reporting'}">
+                                        <kanban style="display: flex; flex-wrap: wrap;">
+                                            <field name="fecha"/>
+                                            <field name="descripcion"/>
+                                            <templates>
+                                                <t t-name="kanban-box">
+                                                    <div t-attf-class="oe_kanban_global_click o_kanban_record">
+                                                        <t t-esc="'Fecha: '"/><strong><field name="fecha"/></strong><br/>
+                                                        <t t-esc="'Descripción: '"/><strong><field name="descripcion"/></strong><br/>
+                                                    </div>
+                                                </t>
+                                            </templates>
+                                        </kanban>
+                                    </field>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Saldo Vivo">
+                            <group>
+                                <group>
+                                    <field name="saldo_vivo"/>
+                                </group>
+                                <group>
+                                    <field name="duracion_ventas"/>
+                                </group> 
+                                <group string="Vencimientos Pendientes de Pago">
+                                    <field name="vencimientos_pendientes_ids" widget="one2many_list" nolabel="1" colspan="2">
+                                        <tree>
+                                            <field name="name"/>
+                                            <field name="amount_residual" sum="Total"/>
+                                            <field name="date_maturity" string="Fecha de Vencimiento"/>
+                                        </tree>
+                                    </field>
+                                </group> 
+                                <group string="Pedidos de Venta Pendientes de Facturar"> 
+                                    <field name="pedidos_abiertos_ids" widget="one2many_list" nolabel="1" colspan="2">
+                                        <tree>
+                                            <field name="name"/>
+                                            <field name="amount_total" sum="Total"/>
+                                            <field name="date_order"/>
+                                        </tree>
+                                    </field>
+                                </group> 
+                            </group>
+                        </page>
+                        <page string="Clasificaciones">
+                            <button name="action_abrir_wizard_clasificacion" string="Solicitar Clasificación" type="object" class="oe_highlight btn-spacing" context="{'action_type': 'clasificar'}"/>
+                            <button string="Eliminar Clasificación" type="object" class="btn-danger btn-delete" name="action_delete_classification_en_vigor" confirm="¿Estás seguro de que deseas desclasificar a este cliente?"/>
+                            <group>
+                                <group string="En Vigor">
+                                    <field name="clasificacion_en_vigor" colspan="2" nolabel="1" mode="kanban" context="{'kanban_view_ref': 'credito-caucion.view_kanban_clasificacion', 'form_view_ref': 'credito-caucion.view_form_clasificacion'}"/>
+                                </group>
+                                <group string="Pendiente">
+                                    <field name="clasificacion_pendiente" colspan="2" nolabel="1" mode="kanban" context="{'kanban_view_ref': 'credito-caucion.view_kanban_clasificacion', 'form_view_ref': 'credito-caucion.view_form_clasificacion'}"/>
+                                </group>
+                                <group string="Histórico">
+                                    <field name="clasificaciones_historico" colspan="4" nolabel="1" mode="kanban" context="{'kanban_view_ref': 'credito-caucion.view_kanban_clasificacion', 'form_view_ref': 'credito-caucion.view_form_clasificacion'}"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="AFP">
+                            <button name="action_create_afp" string="Comunicar AFP" type="object" class="oe_highlight"/>
+                            <button string="Cancelar AFP" type="object" class="btn-danger btn-delete" name="action_cancel_all_afp" confirm="¿Estás seguro de que deseas cancelar todos los Avisos de Falta de Pago de este cliente?"/>
+                            <group>
+                                <group string="AFP Comunicados">
+                                    <field name="afp_comunicados" colspan="2" nolabel="1" mode="kanban" context="{'kanban_view_ref': 'credito-caucion.view_kanban_afp', 'form_view_ref': 'credito-caucion.view_form_afp'}" create="false" edit="false"/>
+                                </group>
+                                <group string="AFP Pendientes">
+                                    <field name="afp_pendientes" colspan="2" nolabel="1" mode="kanban" context="{'kanban_view_ref': 'credito-caucion.view_kanban_afp', 'form_view_ref': 'credito-caucion.view_form_afp'}"/>
+                                </group>
+                                <group string="AFP Cancelados">
+                                    <field name="afp_cancelados" colspan="2" nolabel="1" mode="kanban" context="{'kanban_view_ref': 'credito-caucion.view_kanban_afp', 'form_view_ref': 'credito-caucion.view_form_afp'}"/>
+                                </group>
+                                <group string="AFP Rechazados">
+                                    <field name="afp_rechazados" colspan="2" nolabel="1" mode="kanban" context="{'kanban_view_ref': 'credito-caucion.view_kanban_afp', 'form_view_ref': 'credito-caucion.view_form_afp'}"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Prórrogas">
+                            <button name="action_create_prorroga" string="Comunicar Prórroga" type="object" class="oe_highlight"/>
+                            <button string="Cancelar Prórrogas" type="object" class="btn-danger btn-delete" name="action_cancel_all_prorrogas" confirm="¿Estás seguro de que deseas cancelar todas las Prórrogas de este cliente?"/>
+                            <group>
+                                <group string="Prórrogas Comunicadas">
+                                    <field name="prorrogas_comunicadas" colspan="2" nolabel="1" mode="kanban" context="{'kanban_view_ref': 'credito-caucion.view_kanban_prorroga', 'form_view_ref': 'credito-caucion.view_form_prorroga'}"/>
+                                </group>
+                                <group string="Prórrogas Pendientes">
+                                    <field name="prorrogas_pendientes" colspan="2" nolabel="1" mode="kanban" context="{'kanban_view_ref': 'credito-caucion.view_kanban_prorroga', 'form_view_ref': 'credito-caucion.view_form_prorroga'}"/>
+                                </group>
+                                <group string="Prórrogas Canceladas">
+                                    <field name="prorrogas_canceladas" colspan="2" nolabel="1" mode="kanban" context="{'kanban_view_ref': 'credito-caucion.view_kanban_prorroga', 'form_view_ref': 'credito-caucion.view_form_prorroga'}"/>
+                                </group>
+                                <group string="Prórrogas Rechazadas">
+                                    <field name="prorrogas_rechazadas" colspan="2" nolabel="1" mode="kanban" context="{'kanban_view_ref': 'credito-caucion.view_kanban_prorroga', 'form_view_ref': 'credito-caucion.view_form_prorroga'}"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Siniestros">
+                            <button name="action_create_siniestro" string="Comunicar Siniestro" type="object" class="oe_highlight"/>                 
+                            <group>
+                                <group string="Siniestros Abiertos">
+                                    <field name="siniestros_abiertos" colspan="2" nolabel="1" mode="kanban" context="{'kanban_view_ref': 'credito-caucion.view_kanban_siniestro', 'form_view_ref': 'credito-caucion.view_form_siniestro'}"/>
+                                </group>
+                                <group string="Siniestros Pendientes">
+                                    <field name="siniestros_pendientes" colspan="2" nolabel="1" mode="kanban" context="{'kanban_view_ref': 'credito-caucion.view_kanban_siniestro', 'form_view_ref': 'credito-caucion.view_form_siniestro'}"/>
+                                </group>
+                                <group string="Siniestros Anulados">
+                                    <field name="siniestros_anulados" colspan="2" nolabel="1" mode="kanban" context="{'kanban_view_ref': 'credito-caucion.view_kanban_siniestro', 'form_view_ref': 'credito-caucion.view_form_siniestro'}"/>
+                                </group>
+                                <group string="Siniestros Terminados">
+                                    <field name="siniestros_terminados" colspan="2" nolabel="1" mode="kanban" context="{'kanban_view_ref': 'credito-caucion.view_kanban_siniestro', 'form_view_ref': 'credito-caucion.view_form_siniestro'}"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Alertas">
+                            <group>
+                                <group string="Alertas Nuevas">
+                                    <field name="alertas_nuevas" colspan="2" nolabel="1" mode="kanban" context="{'kanban_view_ref': 'credito-caucion.view_kanban_alerta', 'form_view_ref': 'credito-caucion.view_form_alerta'}"/>
+                                </group>
+                                <group string="Alertas Leídas">
+                                    <field name="alertas_leidas" colspan="2" nolabel="1" mode="kanban" context="{'kanban_view_ref': 'credito-caucion.view_kanban_alerta', 'form_view_ref': 'credito-caucion.view_form_alerta'}"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Resultados">
+                            <group>
+                                <group>
+                                    <field name="ejercicio" string='Año del Ejercicio'/>
+                                </group>
+                            </group>
+                            <group>
+                                <group string="Información Financiera">
+                                    <field name="ventas"/>
+                                    <field name="resultado"/>
+                                    <field name="fondos_propios"/>
+                                    <field name="fondos_maniobra"/>
+                                    <field name="endeudamiento_cp"/>
+                                    <field name="empleados"/>
+                                </group>
+                                <group string="Información de Riesgo">
+                                    <field name="descripcion_cnae"/>
+                                    <field name="importe_solicitado"/>
+                                    <field name="importe_concedido"/>
+                                    <field name="numero_afp_comunicados"/>
+                                    <field name="numero_prorrogas_comunicadas"/>
+                                    <field name="numero_siniestros_abiertos"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                <field name="message_ids" widget="mail_thread"/>
+                <field name="activity_ids" widget="mail_activity"/>
+            </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View for Riesgo -->
+    <record id="view_riesgo_search" model="ir.ui.view">
+        <field name="name">riesgo.search</field>
+        <field name="model">riesgo</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+            </search>
+        </field>
+    </record>
+</odoo>

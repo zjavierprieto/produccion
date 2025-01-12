@@ -1,0 +1,189 @@
+<odoo>
+  <!-- Dashboards -->
+
+  <record id="action_credito_caucion_dashboard" model="ir.actions.client">
+    <field name="name">General</field>
+    <field name="tag">credito-caucion.dashboard</field>
+  </record>
+
+  <record id="action_credito_caucion_dashboard_facturas" model="ir.actions.client">
+    <field name="name">Facturas</field>
+    <field name="tag">credito-caucion.dashboard_facturas</field>
+  </record>
+
+  <!-- Perfiles de Riesgo -->
+
+  <record id="action_credito_caucion_clientes" model="ir.actions.act_window">
+      <field name="name">Clientes</field>
+      <field name="res_model">riesgo</field>
+      <field name="view_mode">kanban,tree,form</field>
+      <field name="view_id" ref="view_riesgo_kanban"/>
+      <field name="search_view_id" ref="view_riesgo_search"/>
+      <field name="view_ids" eval="[(5,), (0, 0, {'view_mode': 'kanban', 'view_id': ref('view_riesgo_kanban')}), (0, 0, {'view_mode': 'tree', 'view_id': ref('view_riesgo_tree')})]"/>
+  </record>
+
+  <!-- Servicios -->
+
+  <record id="action_clasificacion" model="ir.actions.act_window">
+      <field name="name">Clasificaciones</field>
+      <field name="res_model">riesgo.clasificacion</field> 
+      <field name="view_mode">tree,form</field> 
+      <field name="view_id" ref="view_clasificacion_tree"/> 
+      <field name="search_view_id" ref="view_clasificacion_search"/>
+      <field name="context">{'search_default_clasificaciones_en_vigor': 1}</field>
+  </record>
+
+  <record id="action_cobro" model="ir.actions.act_window">
+    <field name="name">Cobros (Vencimientos)</field>
+    <field name="res_model">account.move.line</field>
+    <field name="view_mode">tree,form</field>
+    <field name="view_ids" eval="[
+      (5, 0, 0), 
+      (0, 0, {'view_mode': 'tree', 'view_id': ref('view_cobro_tree')}), 
+      (0, 0, {'view_mode': 'form', 'view_id': ref('view_gestor_cobros_form')})]"/>
+    <field name="search_view_id" ref="view_gestor_cobros_search"/>
+    <field name="domain">[
+        ('display_type', '=', 'payment_term'),
+        ('debit', '&gt;', 0),
+        ('parent_state', '=', 'posted')
+      ]</field> 
+  </record>
+
+  <record id="action_afp" model="ir.actions.act_window">
+      <field name="name">Avisos de Falta de Pago</field>
+      <field name="res_model">riesgo.afp</field>
+      <field name="view_mode">tree,form</field>
+      <field name="view_id" ref="view_afp_tree"/>
+      <field name="search_view_id" ref="view_afp_search"/>
+      <field name="context">{'search_default_afp_comunicados': 1}</field>
+  </record>
+
+  <record id="action_prorroga" model="ir.actions.act_window">
+      <field name="name">Prórrogas</field>
+      <field name="res_model">riesgo.prorroga</field>
+      <field name="view_mode">tree,form</field>
+      <field name="view_id" ref="view_prorroga_tree"/>
+      <field name="search_view_id" ref="view_prorroga_search"/>
+      <field name="context">{'search_default_prorrogas_comunicadas': 1}</field>
+  </record>
+
+  <record id="action_siniestro" model="ir.actions.act_window">
+      <field name="name">Siniestros</field>
+      <field name="res_model">riesgo.siniestro</field>
+      <field name="view_mode">tree,form</field>
+      <field name="view_id" ref="view_siniestro_tree"/>
+      <field name="search_view_id" ref="view_siniestro_search"/>
+      <field name="context">{'search_default_siniestros_abiertos_pendientes': 1}</field>
+  </record> 
+
+  <record id="action_riesgo_activity" model="ir.actions.act_window">
+    <field name="name">Actividades</field>
+    <field name="res_model">riesgo</field>
+    <field name="view_mode">tree,form</field>
+    <field name="view_id" ref="credito-caucion.view_riesgo_activity_tree"/>
+    <field name="domain">[("activity_ids.active", "in", [True, False])]</field>
+  </record>
+
+  <record id="action_alerta" model="ir.actions.act_window">
+      <field name="name">Alertas</field>
+      <field name="res_model">riesgo.alerta</field>
+      <field name="view_mode">tree,form</field>
+      <field name="view_id" ref="view_alerta_tree"/>
+      <field name="search_view_id" ref="view_alerta_search"/>
+      <field name="context">{'search_default_alertas_nuevas': 1}</field>
+  </record> 
+
+  <!-- Tareas Pendientes -->
+
+  <record id="action_gestor_clasificacion" model="ir.actions.act_window">
+    <field name="name">Gestor de Clasificaciones</field>
+    <field name="res_model">riesgo</field>
+    <field name="view_mode">tree</field>
+    <field name="view_id" ref="view_gestor_clasificacion_tree"/>
+    <field name="search_view_id" ref="view_gestor_clasificaciones_search"/>
+    <!-- <field name="domain">[('estado_clasificacion', 'in', ['clasificar','ampliar','reducir','eliminar'])]</field> -->
+  </record>
+
+  <record id="action_gestor_cobros" model="ir.actions.act_window">
+    <field name="name">Gestor de Cobros</field>
+    <field name="res_model">account.move.line</field>
+    <field name="view_mode">tree,form</field>
+    <field name="view_ids" eval="[
+      (5, 0, 0), 
+      (0, 0, {'view_mode': 'tree', 'view_id': ref('view_gestor_cobros_tree')}), 
+      (0, 0, {'view_mode': 'form', 'view_id': ref('view_gestor_cobros_form')})]"/>
+    <field name="search_view_id" ref="view_gestor_cobros_search"/>
+    <field name="domain">[
+    ('tiene_boton_activo', '=', True),
+    ('parent_state', '=', 'posted'),
+    ('display_type', '=', 'payment_term'),
+    ('debit', '&gt;', 0)
+    ]</field>
+  </record>
+
+  <record id="action_vencimientos_impagados" model="ir.actions.act_window">
+      <field name="name">Vencimientos Impagados</field>
+      <field name="res_model">account.move.line</field>
+      <field name="view_mode">tree</field>
+      <field name="view_id" ref="credito-caucion.view_comunicar_incidencia_cobros_tree"/>
+      <field name="search_view_id" ref="credito-caucion.view_gestor_cobros_search"/>
+      <field name="target">new</field>
+      <field name="domain">[
+        ('amount_residual', '&gt;', 0),
+        ('date_maturity', '&lt;', context_today()),
+        ('parent_state', '=', 'posted')
+      ]</field>
+  </record>
+
+  <record id="action_gestor_ventas" model="ir.actions.act_window">
+    <field name="name">Gestor de Ventas</field>
+    <field name="res_model">riesgo.declaracion.ventas</field>
+    <field name="view_mode">tree,pivot,form</field>
+    <field name="view_id" ref="view_declaracion_ventas_tree"/>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">
+        No hay declaraciones de ventas disponibles.
+      </p>
+    </field>
+  </record>
+
+
+  <!-- Menús -->
+  
+  <menuitem id="menu_credito_caucion_root" name="TeCredit" sequence="1" />
+  
+  <!-- General -->
+  <menuitem id="menu_credito_caucion_general" name="General" parent="menu_credito_caucion_root" action="action_credito_caucion_dashboard" sequence="1"/>
+  <!-- Facturas -->
+  <menuitem id="menu_credito_caucion_facturas" name="Facturas" parent="menu_credito_caucion_root" action="action_credito_caucion_dashboard_facturas" sequence="2"/>
+  <!-- Clientes -->
+  <menuitem id="menu_credito_caucion_clientes" name="Clientes" parent="menu_credito_caucion_root" action="action_credito_caucion_clientes" sequence="3"/>
+  <!-- Servicios -->
+  <menuitem id="menu_servicios" name="Servicios" parent="menu_credito_caucion_root" sequence="4"/>
+  <!-- Tareas Pendientes -->
+  <menuitem id="menu_tareas" name="Gestores" parent="menu_credito_caucion_root" sequence="6"/>
+  
+  <!-- Submenús -->
+  
+  <!-- Submenús Servicios-->
+  <menuitem id="menu_clasificacion" name="Clasificaciones" parent="menu_servicios" action="action_clasificacion" sequence="1"/>
+  <menuitem id="menu_cobro" name="Cobros" parent="menu_servicios" action="action_cobro" sequence="2"/>
+
+  <menuitem id="menu_incidencias" name="Incidencias" parent="menu_servicios" sequence="3"/>
+
+  <menuitem id="menu_afp" name="AFP" parent="menu_incidencias" action="action_afp" sequence="1"/>
+  <menuitem id="menu_prorroga" name="Prórrogas" parent="menu_incidencias" action="action_prorroga" sequence="2"/>
+  <menuitem id="menu_siniestro" name="Siniestros" parent="menu_incidencias" action="action_siniestro" sequence="3"/> 
+
+  <menuitem id="menu_notificaciones" name="Notificaciones" parent="menu_servicios" sequence="4"/>
+
+  <menuitem id="menu_actividades" name="Actividades" parent="menu_notificaciones" action="action_riesgo_activity" sequence="1"/>
+  <menuitem id="menu_alerta" name="Alertas" parent="menu_notificaciones" action="action_alerta" sequence="2"/>
+
+  <!-- Submenús Tareas Pendientes -->
+  <menuitem id="menu_gestor_clasificaciones" name="Gestor de Clasificaciones" parent="menu_tareas" action="action_gestor_clasificacion" sequence="1"/>
+
+  <menuitem id="menu_gestor_cobros" name="Gestor de Cobros" parent="menu_tareas" action="action_gestor_cobros" sequence="2"/>
+
+  <menuitem id="menu_gestor_ventas" name="Gestor de Ventas" parent="menu_tareas" action="action_gestor_ventas" sequence="3"/>
+</odoo>

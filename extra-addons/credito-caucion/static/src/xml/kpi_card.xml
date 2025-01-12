@@ -1,0 +1,12 @@
+<templates>
+    <t t-name="credito-caucion.KpiCard" owl="1">
+        <div style="height:8vh; cursor:pointer; background-color:white; border-radius:0.5rem; flex:1; box-shadow:0 0 10px 1px rgba(0, 0, 0, 0.15); text-align:center; padding:1vh" t-on-click="onClick">
+            <div t-attf-class="h1 fw-bold #{props.colorClass}" style="font-size: 20px">
+                <span t-esc="props.cash"/> €
+            </div>
+            <div class="h3 text-muted">
+                <span t-esc="props.value"/> <span t-esc="props.name"/>
+            </div>
+        </div>
+    </t>
+</templates>

@@ -1,0 +1,74 @@
+<odoo>
+    <record id="view_alerta_tree" model="ir.ui.view">
+        <field name="name">alerta.tree</field>
+        <field name="model">riesgo.alerta</field>
+        <field name="arch" type="xml">
+            <tree string="Alertas" create="false" delete="false" duplicate="false" default_order="fecha desc">
+                <field name="display_name"/>
+                <field name="fecha"/>
+                <field name="descripcion"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_kanban_alerta" model="ir.ui.view">
+        <field name="name">alerta.kanban</field>
+        <field name="model">riesgo.alerta</field>
+        <field name="arch" type="xml">
+            <kanban style="display: flex; flex-wrap: wrap;">
+                <field name="fecha"/>
+                <field name="descripcion"/>
+                <field name="estado"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_global_click o_kanban_record">
+                            <field name="fecha"/>
+                            <field name="descripcion"/>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_form_alerta" model="ir.ui.view">
+        <field name="name">alerta.form</field>
+        <field name="model">riesgo.alerta</field>
+        <field name="arch" type="xml">
+            <form string="Alerta" create="false" delete="false" duplicate="false">
+                <sheet>
+                    <group>
+                        <field name="fecha"/>
+                        <field name="descripcion"/>
+                        <field name="estado"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <field name="estado" invisible="1"/>
+                    <button string="Marcar como Vista" type="object" class="oe_highlight" name="action_mark_as_read" invisible="estado != 'Nueva'"/>
+                    <button string="Cerrar" special="cancel" class="oe_highlight"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_alerta_search" model="ir.ui.view">
+        <field name="name">alerta.search</field>
+        <field name="model">riesgo.alerta</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="display_name"/>
+                <field name="estado"/>
+                
+                <filter string="Nuevas" name="alertas_nuevas" domain="[('estado', '=', 'Nueva')]"/>
+                <filter string="Vistas" name="alertas_vistas" domain="[('estado', '=', 'Vista')]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_alerta" model="ir.actions.act_window">
+        <field name="name">Alerta</field>
+        <field name="res_model">riesgo.alerta</field>
+        <field name="view_mode">kanban,form</field>
+    </record>
+</odoo>
