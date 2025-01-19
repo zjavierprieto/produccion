@@ -40,12 +40,103 @@
 
 	<!-- Services -->
   <record id="action_cyc_classification" model="ir.actions.act_window">
-      <field name="name">Clasificaciones</field>
-      <field name="res_model">cyc.classification</field> 
-      <field name="view_mode">list,form</field> 
-      <field name="view_id" ref="view_cyc_classification_list"/> 
-      <field name="search_view_id" ref="view_cyc_classification_search"/>
-      <field name="context">{'search_default_classifications_in_force': 1}</field>
+    <field name="name">Clasificaciones</field>
+    <field name="res_model">cyc.classification</field> 
+    <field name="view_mode">list,form</field> 
+    <field name="view_id" ref="view_cyc_classification_list"/> 
+    <field name="search_view_id" ref="view_cyc_classification_search"/>
+    <field name="context">{'search_default_classifications_in_force': 1}</field>
+  </record>
+
+  <record id="action_cyc_collection" model="ir.actions.act_window">
+    <field name="name">Cobros / Vencimientos</field>
+    <field name="res_model">cyc.classification</field> 
+    <field name="view_mode">list,form</field> 
+    <field name="view_id" ref="view_cyc_classification_list"/> 
+    <field name="search_view_id" ref="view_cyc_classification_search"/>
+    <field name="context">{'search_default_classifications_in_force': 1}</field>
+  </record>
+
+  <record id="action_cyc_afp" model="ir.actions.act_window">
+    <field name="name">AFPs</field>
+    <field name="res_model">cyc.classification</field> 
+    <field name="view_mode">list,form</field> 
+    <field name="view_id" ref="view_cyc_classification_list"/> 
+    <field name="search_view_id" ref="view_cyc_classification_search"/>
+    <field name="context">{'search_default_classifications_in_force': 1}</field>
+  </record>
+
+  <record id="action_cyc_extension" model="ir.actions.act_window">
+    <field name="name">Prórrogas</field>
+    <field name="res_model">cyc.classification</field> 
+    <field name="view_mode">list,form</field> 
+    <field name="view_id" ref="view_cyc_classification_list"/> 
+    <field name="search_view_id" ref="view_cyc_classification_search"/>
+    <field name="context">{'search_default_classifications_in_force': 1}</field>
+  </record>
+
+  <record id="action_cyc_claim" model="ir.actions.act_window">
+    <field name="name">Siniestros</field>
+    <field name="res_model">cyc.classification</field> 
+    <field name="view_mode">list,form</field> 
+    <field name="view_id" ref="view_cyc_classification_list"/> 
+    <field name="search_view_id" ref="view_cyc_classification_search"/>
+    <field name="context">{'search_default_classifications_in_force': 1}</field>
+  </record>
+
+  <record id="action_cyc_manual_review" model="ir.actions.act_window">
+    <field name="name">Revisiones Manuales</field>
+    <field name="res_model">cyc.classification</field> 
+    <field name="view_mode">list,form</field> 
+    <field name="view_id" ref="view_cyc_classification_list"/> 
+    <field name="search_view_id" ref="view_cyc_classification_search"/>
+    <field name="context">{'search_default_classifications_in_force': 1}</field>
+  </record>
+
+  <record id="action_cyc_alert" model="ir.actions.act_window">
+    <field name="name">Alertas</field>
+    <field name="res_model">cyc.classification</field> 
+    <field name="view_mode">list,form</field> 
+    <field name="view_id" ref="view_cyc_classification_list"/> 
+    <field name="search_view_id" ref="view_cyc_classification_search"/>
+    <field name="context">{'search_default_classifications_in_force': 1}</field>
+  </record>
+
+  <record id="action_cyc_activities" model="ir.actions.act_window">
+    <field name="name">Actividades</field>
+    <field name="res_model">cyc.classification</field> 
+    <field name="view_mode">list,form</field> 
+    <field name="view_id" ref="view_cyc_classification_list"/> 
+    <field name="search_view_id" ref="view_cyc_classification_search"/>
+    <field name="context">{'search_default_classifications_in_force': 1}</field>
+  </record>
+
+  <!-- Managers -->
+  <record id="action_cyc_manager_classification" model="ir.actions.act_window">
+    <field name="name">Gestor de Clasificaciones</field>
+    <field name="res_model">cyc.classification</field> 
+    <field name="view_mode">list,form</field> 
+    <field name="view_id" ref="view_cyc_classification_list"/> 
+    <field name="search_view_id" ref="view_cyc_classification_search"/>
+    <field name="context">{'search_default_classifications_in_force': 1}</field>
+  </record>
+
+  <record id="action_cyc_manager_collection" model="ir.actions.act_window">
+    <field name="name">Gestor de Cobros</field>
+    <field name="res_model">cyc.classification</field> 
+    <field name="view_mode">list,form</field> 
+    <field name="view_id" ref="view_cyc_classification_list"/> 
+    <field name="search_view_id" ref="view_cyc_classification_search"/>
+    <field name="context">{'search_default_classifications_in_force': 1}</field>
+  </record>
+
+  <record id="action_cyc_manager_sales" model="ir.actions.act_window">
+    <field name="name">Gestor de Ventas</field>
+    <field name="res_model">cyc.classification</field> 
+    <field name="view_mode">list,form</field> 
+    <field name="view_id" ref="view_cyc_classification_list"/> 
+    <field name="search_view_id" ref="view_cyc_classification_search"/>
+    <field name="context">{'search_default_classifications_in_force': 1}</field>
   </record>
 
   <!-- Root -->
@@ -55,6 +146,7 @@
 	<menuitem id="menu_cyc_dashboard" name="Cuadros de Mandos" parent="menu_cyc_root" sequence="2"/>
   <menuitem id="menu_cyc_partner" name="Clientes" parent="menu_cyc_root" action="action_cyc_partner" sequence="1"/>
 	<menuitem id="menu_cyc_services" name="Servicios" parent="menu_cyc_root" sequence="3"/>
+  <menuitem id="menu_cyc_managers" name="Gestores" parent="menu_cyc_root" sequence="5"/>
 
 	<!-- Submenu Dashboards -->
   <menuitem id="menu_cyc_dashboard_home" name="Resumen General" parent="menu_cyc_dashboard" action="action_cyc_dashboard_general_summary" sequence="1"/>
@@ -65,5 +157,20 @@
 
 	<!-- Submenu Services  -->
   <menuitem id="menu_cyc_classification" name="Clasificaciones" parent="menu_cyc_services" action="action_cyc_classification" sequence="1"/>
+  <menuitem id="menu_cyc_collection" name="Cobros / Vencimientos" parent="menu_cyc_services" action="action_cyc_collection" sequence="2"/>
+  <menuitem id="menu_cyc_incidents" name="Incidencias" parent="menu_cyc_services" sequence="3"/>
+  <menuitem id="menu_cyc_notifications" name="Notificaciones" parent="menu_cyc_services" sequence="4"/>
 
+  <menuitem id="menu_cyc_afp" name="AFPs" parent="menu_cyc_incidents" action="action_cyc_afp" sequence="1"/>
+  <menuitem id="menu_cyc_extension" name="Prórrogas" parent="menu_cyc_incidents" action="action_cyc_extension" sequence="2"/>
+  <menuitem id="menu_cyc_claim" name="Siniestros" parent="menu_cyc_incidents" action="action_cyc_claim" sequence="3"/> 
+  <menuitem id="menu_cyc_manual_review" name="Revisiones Manuales" parent="menu_cyc_incidents" action="action_cyc_manual_review" sequence="4"/>
+  
+  <menuitem id="menu_alerts" name="Alertas" parent="menu_cyc_notifications" action="action_cyc_alert" sequence="1"/>
+  <menuitem id="menu_activities" name="Actividades" parent="menu_cyc_notifications" action="action_cyc_activities" sequence="2"/>
+
+  <!-- Submenu Managers -->
+  <menuitem id="menu_cyc_manager_classification" name="Gestor de Clasificaciones" parent="menu_cyc_managers" action="action_cyc_manager_classification" sequence="1"/>
+  <menuitem id="menu_cyc_manager_collection" name="Gestor de Cobros" parent="menu_cyc_managers" action="action_cyc_manager_collection" sequence="2"/>
+  <menuitem id="menu_cyc_manager_sales" name="Gestor de Ventas" parent="menu_cyc_managers" action="action_cyc_manager_sales" sequence="3"/>
 </odoo>

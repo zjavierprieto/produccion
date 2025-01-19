@@ -15,7 +15,7 @@ class CycClassification(models.Model):
     # FIELDS
 
     amount_requested = fields.Monetary(string='Importe Solicitado', currency_field='currency_id')
-    amount_granted = fields.Monetary(string='Importe Concedido', currency_field='currency_id', default=0)
+    amount_granted = fields.Monetary(string='Importe Concedido', currency_field='currency_id')
 
     date_request = fields.Date(string='Fecha de Solicitud')
     date_validation = fields.Date(string='Fecha de Validación')
@@ -28,21 +28,22 @@ class CycClassification(models.Model):
     
     message = fields.Char(string='Mensaje')
     error = fields.Char(string='Error')
-   
-    status1 = fields.Selection(selection=[
-        ('in force', 'Vigor'),
-        ('historic', 'Histórico'),
-    ], string='Situación', default='in force')
 
-    status2 = fields.Selection([
+    status = fields.Selection([
+        # error
         ('validation error', 'Error en la Validación'),
         ('response error', 'Error en la Respuesta'),
+        # pending
         ('pending classification', 'Pendiente de Clasificar'), 
+        # in force
         ('pending amplification', 'Pendiente de Ampliar'), 
         ('pending reduction', 'Pendiente de Reducir'), 
         ('pending elimination', 'Pendiente de Eliminar'),
+        ('review requested', 'Revisión Solicitada'),
         ('correct', 'Correcto'),
         ('limited', 'Limitada por CyC'),
+        # historic
         ('refused cyc', 'Rehusada por CyC'),
         ('refused us', 'Rehusada por Nosotros')
-    ], string='Estado', default='pending classification')
+    ], string='Estado')
+

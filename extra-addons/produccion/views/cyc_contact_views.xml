@@ -14,10 +14,8 @@
 								<strong class="o_kanban_record_title">
 									<field name="res_partner_id"/>
 								</strong>
-                <field name="email"/>
-                <field name="phone"/>
 								<field name="email"/>
-                <field name="phone"/>
+								<field name="phone"/>
 							</div>
 						</div>
 					</t>

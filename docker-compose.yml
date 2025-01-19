@@ -1,12 +1,10 @@
-version: '3.9'
-
 services:
   api:
     build: .
-    container_name: api
+    container_name: api-18
     restart: always
     ports:
-      - "5003:5003"
+      - "5004:5004"
     volumes:
       - .:/app
     working_dir: /app/api
@@ -15,11 +13,11 @@ services:
       - db
       - redis
     networks:
-      - app-net
+      - app-net-18
 
   celery_worker:
     build: .
-    container_name: celery-worker
+    container_name: celery-worker-18
     command: celery -A app.celery_app worker --loglevel=DEBUG
     volumes:
       - .:/app
@@ -29,11 +27,11 @@ services:
       - redis
       - odoo
     networks:
-      - app-net
+      - app-net-18
 
   celery_beat:
     build: .
-    container_name: celery-beat
+    container_name: celery-beat-18
     command: celery -A app.celery_app beat --loglevel=DEBUG
     volumes:
       - .:/app
@@ -43,54 +41,54 @@ services:
       - redis
       - odoo
     networks:
-      - app-net
+      - app-net-18
 
   redis:
     image: redis:latest
-    container_name: redis
+    container_name: redis-18
     ports:
-      - "6379:6379"
+      - "6380:6380"
     networks:
-      - app-net
+      - app-net-18
 
   odoo:
     image: odoo:latest
-    container_name: odoo
+    container_name: odoo-18
     depends_on:
       - db
     ports:
-      - "8069:8069"
+      - "8070:8069"
     volumes:
-      - odoo-data:/var/lib/odoo
+      - odoo-data-18:/var/lib/odoo
       - ./config:/etc/odoo
       - ./extra-addons:/mnt/extra-addons
     environment:
-      - HOST=db
-      - PORT=5432
-      - USER=odoo
-      - PASSWORD=odoo
-      - DB_NAME=odoo_db
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=odoo
+      - POSTGRES_PASSWORD=odoo
+      - POSTGRES_DB=odoo_db
     networks:
-      - app-net
+      - app-net-18
 
   db:
     image: postgres:15
-    container_name: db
+    container_name: db-18
     environment:
       - POSTGRES_DB=odoo_db
       - POSTGRES_USER=odoo
       - POSTGRES_PASSWORD=odoo
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
-      - db-data:/var/lib/postgresql/data
+      - db-data-18:/var/lib/postgresql/data
     networks:
-      - app-net
+      - app-net-18
 
 networks:
-  app-net:
+  app-net-18:
 
 volumes:
-  odoo-data:
-  db-data:
+  odoo-data-18:
+  db-data-18:
 

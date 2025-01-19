@@ -12,8 +12,16 @@
               <setting>
                 <field name="policy_type"/>
               </setting>
-              <setting help="Correo para enviar comunicaciones de riesgo.">
+              <setting help="Correo receptor comunicaciones de riesgo.">
                 <field name="insurance_agent_email" placeholder="correo@ejemplo.com"/>
+              </setting>
+              <setting>
+                <field name="aws_email" placeholder="Ingrese el correo electrónico para AWS SES" style="width: 100%"/>
+                <button string="Verificar" type="object" name="action_verify_email" class="btn-primary"/>
+              </setting>
+              <setting help="Para verificar el email, revise su bandeja de entrada y haga clic en el enlace de verificación.">
+                <field name="aws_email_verified" readonly="1"/>
+                <button string="Actualizar Estado" type="object" name="update_verification_status" class="btn-secondary"/>
               </setting>
             </block>
             <block title="Capital Póliza">

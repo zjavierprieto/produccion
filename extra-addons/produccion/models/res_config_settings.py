@@ -13,6 +13,9 @@ class ResConfigSettings(models.TransientModel):
         string="Tipo de Póliza", default="lider")
     insurance_agent_email = fields.Char(string="Correo del Agente")
     
+    aws_email = fields.Char(string="Correo electrónico para configurar en AWS SES", help="Correo que será verificado para enviar emails mediante AWS SES.")
+    aws_email_verified = fields.Boolean(string="¿Correo Verificado?", readonly=True, help="Indica si el correo fue verificado correctamente con AWS SES.")
+
     # Capital 
     capital_insured = fields.Integer(string="Capital Asegurado")
     capital_anonymous = fields.Integer(string="Capital Anónimos")
@@ -76,9 +79,17 @@ class ResConfigSettings(models.TransientModel):
     automatic_deletion = fields.Boolean(string="Eliminación Automática", default=False)
     days_to_delete = fields.Integer(string="Días sin facturar para Eliminación", default=365)
 
-    # Sales Declaration
     sales_declaration_day = fields.Integer(string="Día del Mes para Declaración de Ventas", default=25)
     automatic_sales_declaration = fields.Boolean(string="Declaración de Ventas Automática", default=False)
+
+
+    def action_verify_email(self):
+        print("hola")
+        return
+
+    def update_verification_status(self):
+        return
+
 
     def set_values(self):
         super(ResConfigSettings, self).set_values()

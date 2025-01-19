@@ -121,8 +121,20 @@ class CycPartner(models.Model):
 
     # DOMAIN-BASED FIELDS
 
-    classification_ids = fields.One2many('cyc.classification', 'cyc_partner_id', domain=[('status1', '=', 'in force')])
-    classifications_historic_ids = fields.One2many('cyc.classification', 'cyc_partner_id', domain=[('status1', '=', 'historic')])
+    classification_ids = fields.One2many('cyc.classification', 'cyc_partner_id', domain=[('status', 'in', [
+        'pending amplification', 
+        'pending reduction', 
+        'pending elimination', 
+        'review requested', 
+        'correct', 
+        'limited'])])
+    classification_historic_ids = fields.One2many('cyc.classification', 'cyc_partner_id', domain=[('status', 'in', [
+        'refused cyc', 
+        'refused us'])])
+    classification_pending_ids = fields.One2many('cyc.classification', 'cyc_partner_id', domain=[('status', '=', 'pending classification')])
+    classification_error_ids = fields.One2many('cyc.classification', 'cyc_partner_id', domain=[('status', 'in', [
+        'validation error', 
+        'response error'])])
 
     afp_open_ids = fields.One2many('cyc.afp', 'cyc_partner_id', domain=[('status1', '=', 'open')])
     afp_historic_ids = fields.One2many('cyc.afp', 'cyc_partner_id', domain=[('status1', '=', 'historic')])
@@ -152,5 +164,44 @@ class CycPartner(models.Model):
     def action_view_res_partner(self):
         return
 
-    def action_open_classification_wizard(self):
+    def _check_required_fields(self):
+        if not self.vat or len(self.vat) > 20:
+            raise UserError("Por favor, complete el NIF (máximo 20 caracteres).")
+        if not self.name:
+            raise UserError("Por favor, complete el nombre del cliente.")
+        if not self.country_id or not self.country_id.name:
+            raise UserError("Por favor, seleccione un país.")
+        if self.country_id.code == 'ES' and not self.province_id:
+            raise UserError("Por favor, seleccione una provincia.")
+
+    # ----------------------
+    # CLASSIFICATION METHODS
+    # ----------------------
+
+    def action_request_classification(self):
+        self._check_required_fields()
+        
+        return {
+            'name': 'Solicitar Clasificación',
+            'type': 'ir.actions.act_window',
+            'res_model': 'cyc.classification.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_cyc_partner_id': self.id,
+                'default_living_balance': self.living_balance,
+                'default_max_living_balance': self.max_living_balance,
+            }
+        }
+
+    def action_amplify_classification(self):
+        return
+
+    def action_reduce_classification(self):
+        return
+    
+    def action_delete_classification(self):
+        return
+
+    def action_review_classification(self):
         return

@@ -3,11 +3,10 @@
 		<field name="name">cyc.classification.list</field>
 		<field name="model">cyc.classification</field>
 		<field name="arch" type="xml">
-			<list string="Clasificación" create="true" delete="false" duplicate="false" default_order="display_name desc">
+			<list string="Clasificación" create="true" delete="false" duplicate="false" default_order="date_classification desc">
 				<field name="cyc_partner_id"/>
 				<field name="date_classification"/>
-				<field name="status1"/>
-				<field name="status2"/>
+				<field name="status"/>
 				<field name="amount_requested" sum="Total"/>
 				<field name="amount_granted" sum="Total"/>
 			</list>
@@ -20,12 +19,12 @@
 		<field name="arch" type="xml">
 			<kanban>
 				<templates>
-					<t t-name="kanban-box">
+					<t t-name="card">
 						<div class="o_kanban_record">
 							<div>Solicitado: <strong><field name="amount_requested"/></strong></div>
 							<div>Concedido: <strong><field name="amount_granted"/></strong></div>
 							<div>Fecha: <strong><field name="date_classification"/></strong></div>
-							<div>Estado: <strong><field name="status2"/></strong></div>
+							<div>Estado: <strong><field name="status"/></strong></div>
 						</div>
 					</t>
 				</templates>
@@ -44,8 +43,7 @@
 						<field name="date_classification"/>
 						<field name="amount_requested"/>
 						<field name="amount_granted"/>
-						<field name="status1"/>
-						<field name="status2"/>
+						<field name="status"/>
 					</group>
 				</sheet>
 			</form>
@@ -58,10 +56,10 @@
 		<field name="arch" type="xml">
 			<search>
 				<field name="cyc_partner_id"/>
-				<field name="status1"/>
-				<filter string="Vigor" name="classifications_in_force" domain="[('status1', '=', 'in force')]"/>
-				<filter string="Pendientes" name="classifications_pendent" domain="[('status1', '=', 'pendent')]"/>
-				<filter string="Histórico" name="classification_historic" domain="[('status1', '=', 'historic')]"/>
+				<field name="status"/>
+				<filter string="Vigor" name="classifications_in_force" domain="[('status', '=', 'in force')]"/>
+				<filter string="Pendientes" name="classifications_pendent" domain="[('status', '=', 'pendent')]"/>
+				<filter string="Histórico" name="classification_historic" domain="[('status', '=', 'historic')]"/>
 			</search>
 		</field>
 	</record>

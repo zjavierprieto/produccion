@@ -26,7 +26,6 @@
     ],
     'assets': {
         'web.assets_backend': [
-            'produccion/static/src/css/custom_kanban.css',
         ],
     },
     'installable': True,
